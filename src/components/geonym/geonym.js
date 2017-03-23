@@ -69,7 +69,8 @@ class Geonym extends BaseWebBase {
     // Let's give coordinates & Geonym for this new point.
     document.getElementById('userInfo').innerHTML = `
       <div class="alert alert-info" role="alert">
-      <strong>Coordinates:</strong> [ ` + lat + ` ; ` + lon + `]
+      <strong>Coordinates:</strong> [ ` +
+        lat.toFixed(6) + ` ; ` + lon.toFixed(6) + `]
       /
       <strong>Geonym:</strong> ` + geonymReturned + `
       </div>
@@ -130,7 +131,8 @@ class Geonym extends BaseWebBase {
             // Let's draw new address Coordinates on the map.
             document.getElementById('userInfo').innerHTML = `
             <div class="alert alert-info" role="alert">
-              <strong>Coordonnées:</strong> [` + lat + ` ; ` + lon + `]
+              <strong>Coordonnées:</strong> [` +
+                lat.toFixed(6) + ` ; ` + lon.toFixed(6) + `]
               /
               <strong>Geonym:</strong> ` + geonymReturned + `
             </div>
@@ -196,7 +198,8 @@ class Geonym extends BaseWebBase {
 
       document.getElementById('userInfo').innerHTML = `
         <div class="alert alert-info" role="alert">
-        <strong>Coordonnées:</strong> [` + lat.value + ` ; ` + lon.value + `]
+        <strong>Coordonnées:</strong> [` +
+          parseFloat(lat.value).toFixed(6) + ` ; ` + parseFloat(lon.value).toFixed(6) + `]
         /
         <strong>Geonym:</strong> ` + geonymReturned + `
         </div>
@@ -230,7 +233,8 @@ class Geonym extends BaseWebBase {
         // No error
         document.getElementById('userInfo').innerHTML = `
           <div class="alert alert-info" role="alert">
-          <strong>Coordonnées:</strong> [` + positionResult.latitude + ` ; ` + positionResult.longitude + `]
+          <strong>Coordonnées:</strong> [` +
+            parseFloat(positionResult.latitude).toFixed(6) + ` ; ` + parseFloat(positionResult.longitude).toFixed(6) + `]
           /
           <strong>Geonym:</strong> ` + positionResult.geonym + `
           </div>

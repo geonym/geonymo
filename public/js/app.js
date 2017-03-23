@@ -14728,7 +14728,7 @@ var Geonym = function (_BaseWebBase) {
 
       var geonymReturned = this.getFromPositionToGeonym(lon, lat, geonym);
       // Let's give coordinates & Geonym for this new point.
-      document.getElementById('userInfo').innerHTML = '\n      <div class="alert alert-info" role="alert">\n      <strong>Coordinates:</strong> [ ' + lat + ' ; ' + lon + ']\n      /\n      <strong>Geonym:</strong> ' + geonymReturned + '\n      </div>\n    ';
+      document.getElementById('userInfo').innerHTML = '\n      <div class="alert alert-info" role="alert">\n      <strong>Coordinates:</strong> [ ' + lat.toFixed(6) + ' ; ' + lon.toFixed(6) + ']\n      /\n      <strong>Geonym:</strong> ' + geonymReturned + '\n      </div>\n    ';
 
       // Adress Geocoding.
       buttonGeocoding.addEventListener('click', function (e) {
@@ -14784,7 +14784,7 @@ var Geonym = function (_BaseWebBase) {
               var geonymReturned = _this3.getFromPositionToGeonym(lon, lat, geonym);
 
               // Let's draw new address Coordinates on the map.
-              document.getElementById('userInfo').innerHTML = '\n            <div class="alert alert-info" role="alert">\n              <strong>Coordonn\xE9es:</strong> [' + lat + ' ; ' + lon + ']\n              /\n              <strong>Geonym:</strong> ' + geonymReturned + '\n            </div>\n            ';
+              document.getElementById('userInfo').innerHTML = '\n            <div class="alert alert-info" role="alert">\n              <strong>Coordonn\xE9es:</strong> [' + lat.toFixed(6) + ' ; ' + lon.toFixed(6) + ']\n              /\n              <strong>Geonym:</strong> ' + geonymReturned + '\n            </div>\n            ';
               // Leaflet > Let's go to our new coordinates...
               map.setView([lat, lon], 15);
               // Leaflet > ... and create a marker for these coordinates.
@@ -14831,7 +14831,7 @@ var Geonym = function (_BaseWebBase) {
         // Let's calculate Geonym from coordinates.
         var geonymReturned = this.getFromPositionToGeonym(lon.value, lat.value, geonym);
 
-        document.getElementById('userInfo').innerHTML = '\n        <div class="alert alert-info" role="alert">\n        <strong>Coordonn\xE9es:</strong> [' + lat.value + ' ; ' + lon.value + ']\n        /\n        <strong>Geonym:</strong> ' + geonymReturned + '\n        </div>\n        ';
+        document.getElementById('userInfo').innerHTML = '\n        <div class="alert alert-info" role="alert">\n        <strong>Coordonn\xE9es:</strong> [' + parseFloat(lat.value).toFixed(6) + ' ; ' + parseFloat(lon.value).toFixed(6) + ']\n        /\n        <strong>Geonym:</strong> ' + geonymReturned + '\n        </div>\n        ';
         // Leaflet > Let's go to our new coordinates...
         map.setView([lat.value, lon.value], 15);
         // Leaflet > ... and create a marker for these coordinates.
@@ -14856,7 +14856,7 @@ var Geonym = function (_BaseWebBase) {
           document.getElementById('userInfo').innerHTML = '\n          <div class="alert alert-info" role="alert">\n          <strong>' + positionResult.error + '</strong>\n          </div>\n          ';
         } else {
           // No error
-          document.getElementById('userInfo').innerHTML = '\n          <div class="alert alert-info" role="alert">\n          <strong>Coordonn\xE9es:</strong> [' + positionResult.latitude + ' ; ' + positionResult.longitude + ']\n          /\n          <strong>Geonym:</strong> ' + positionResult.geonym + '\n          </div>\n          ';
+          document.getElementById('userInfo').innerHTML = '\n          <div class="alert alert-info" role="alert">\n          <strong>Coordonn\xE9es:</strong> [' + parseFloat(positionResult.latitude).toFixed(6) + ' ; ' + parseFloat(positionResult.longitude).toFixed(6) + ']\n          /\n          <strong>Geonym:</strong> ' + positionResult.geonym + '\n          </div>\n          ';
           // Leaflet > Let's go to our new coordinates...
           map.setView([positionResult.latitude, positionResult.longitude], 15);
           // Leaflet > ... and create a marker for these coordinates.
