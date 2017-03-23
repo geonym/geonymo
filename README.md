@@ -33,19 +33,19 @@ Geonym is based on OpenPostCode project (http://www.openpostcode.org/).
 
 ## install
 
-* Install NodeJS & npm tools from NodeJS PPA (6.x version)
-  $ cd ~
-  $ curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh
-  $ sudo bash nodesource_setup.sh
+* Install NodeJS & npm tools from NodeJS PPA (6.x version)  
+  $ cd ~  
+  $ curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh  
+  $ sudo bash nodesource_setup.sh  
   $ sudo apt-get install nodejs
 
-* Check NodeJS & NPM versions
-  $ nodejs -v
-    => >= v6.9.4
-  $ npm -v
+* Check NodeJS & NPM versions  
+  $ nodejs -v  
+    => >= v6.9.4  
+  $ npm -v  
     => >= 3.10.10
 
-* Delete nodesource_setup.sh
+* Delete nodesource_setup.sh  
   $ rm nodesource_setup.sh
 
 * Go to folder where you want to install Geonym
