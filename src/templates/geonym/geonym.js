@@ -10,16 +10,10 @@ exports.render = () => {
         <div class="container">
           <div class="row">
 
-            <!-- ---------- -->
-            <!-- Column #01 -->
-            <!-- ---------- -->
-            <div class="col-lg-1"></div>
-
-
-            <!-- ---------------------- -->
-            <!-- Column #02 > Geocoding -->
-            <!-- ---------------------- -->
-            <div class="col-lg-10">
+            <!-- ------------------ -->
+            <!-- Geocoding & Geonym -->
+            <!-- ------------------ -->
+            <div class="col-lg-12">
 
               <!-- Title -->
               <div id="box-title" class="box-title">
@@ -44,20 +38,20 @@ exports.render = () => {
                   <!-- Coordinates to Geonym -->
                   <div class="form-group row">
                     <label class="col-lg-3 mt-sm-2" for="data-coord-to-geonym">Coordonnées </label>
-                    <input type="text" class="form-control col-lg-1" id="data-latitude" data-latitude placeholder="Latitude">
+                    <input type="text" class="form-control col-lg-2" id="data-latitude" data-latitude placeholder="Latitude">
                     <div class="col-lg-1"></div>
-                    <input type="text" class="form-control col-lg-1" id="data-longitude" data-longitude placeholder="Longitude">
-                    <div class="col-lg-4"></div>
+                    <input type="text" class="form-control col-lg-2" id="data-longitude" data-longitude placeholder="Longitude">
+                    <div class="col-lg-2"></div>
                     <button type="submit" id="button-coord-to-geonym" class="btn btn-primary col-lg-2">Coord. to Geonym</button>
                   </div>
 
                   <!-- Geonym to Coordinates -->
                   <div class="form-group row">
                     <label class="col-lg-3 mt-sm-2" for="data-opec-to-coord">Geonym </label>
-                    <input type="text" class="form-control col-lg-1" id="data-code" data-code placeholder="Code">
+                    <input type="text" class="form-control col-lg-2" id="data-code" data-code placeholder="Code">
                     <div class="col-lg-1"></div>
-                    <input type="text" class="form-control col-lg-1" id="data-checksum" data-checksum placeholder="Checksum">
-                    <div class="col-lg-4"></div>
+                    <input type="text" class="form-control col-lg-2" id="data-checksum" data-checksum placeholder="Checksum">
+                    <div class="col-lg-2"></div>
                     <button type="submit" id="button-geonym-to-coord" class="btn btn-primary col-lg-2">Geonym to Coord.</button>
                   </div>
                 </form>
@@ -73,12 +67,7 @@ exports.render = () => {
 
               </div><!-- box-content -->
 
-            </div><!-- col-lg-8 -->
-
-            <!-- ---------- -->
-            <!-- Column #03 -->
-            <!-- ---------- -->
-            <div class="col-lg-1"></div>
+            </div><!-- col-lg-12 -->
 
           </div><!-- row -->
         </div><!-- container -->
