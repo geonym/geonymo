@@ -14841,8 +14841,8 @@ var Geonym = function (_BaseWebBase) {
       var calcLongitude04 = this.toRadix(calcLongitude03, Math.sqrt(geonym.alphabetCodeLength));
 
       // Let's process to Geonym calculation
-      var latitudeString = calcLatitude04.toString();
-      var longitudeString = calcLongitude04.toString();
+      var latitudeString = this.padLeft(calcLatitude04, 8);
+      var longitudeString = this.padLeft(calcLongitude04, 8);
       var letter = '';
       var letterPosition = 0;
       var geonymResult = '';
@@ -14958,6 +14958,12 @@ var Geonym = function (_BaseWebBase) {
         if (Q === 0) break;
       }
       return N < 0 ? '-' + HexN : HexN;
+    }
+  }, {
+    key: 'padLeft',
+    value: function padLeft(value, length) {
+      // Pad a value with '0' on the left.
+      return value.toString().length < length ? this.padLeft('0' + value, length) : value;
     }
   }]);
 
