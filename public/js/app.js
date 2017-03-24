@@ -14459,10 +14459,6 @@ var _header = require('./components/app/header.js');
 
 var _header2 = _interopRequireDefault(_header);
 
-var _start = require('./components/start.js');
-
-var _start2 = _interopRequireDefault(_start);
-
 var _geonym = require('./components/geonym/geonym.js');
 
 var _geonym2 = _interopRequireDefault(_geonym);
@@ -14487,9 +14483,7 @@ var App = function (_BaseWebBase) {
 
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
-    _this.session = {};
     _this.header = new _header2.default(header);
-    _this.start = new _start2.default(main);
     _this.geonym = new _geonym2.default(main);
     return _this;
   }
@@ -14497,24 +14491,8 @@ var App = function (_BaseWebBase) {
   _createClass(App, [{
     key: 'init',
     value: function init() {
-      // this.session = {}
       this.header.render();
-      this.start.render();
-      this.addEventListener();
-    }
-  }, {
-    key: 'addEventListener',
-    value: function addEventListener() {
-      this.headerEvents();
-    }
-  }, {
-    key: 'headerEvents',
-    value: function headerEvents() {
-      var _this2 = this;
-
-      this.header.on('geonym_call', function () {
-        return _this2.geonym.render();
-      });
+      this.geonym.render();
     }
   }]);
 
@@ -14523,7 +14501,7 @@ var App = function (_BaseWebBase) {
 
 module.exports = App;
 
-},{"./basewebbase.js":6,"./components/app/header.js":7,"./components/geonym/geonym.js":8,"./components/start.js":9}],6:[function(require,module,exports){
+},{"./basewebbase.js":6,"./components/app/header.js":7,"./components/geonym/geonym.js":8}],6:[function(require,module,exports){
 'use strict';
 
 var _tinyEmitter = require('tiny-emitter');
@@ -14605,25 +14583,7 @@ var Header = function (_BaseWebBase) {
     key: 'render',
     value: function render() {
       this.body.innerHTML = _header2.default.render();
-      this.addEventListener();
     }
-  }, {
-    key: 'addEventListener',
-    value: function addEventListener() {
-      this.geonymClik();
-    }
-  }, {
-    key: 'geonymClik',
-    value: function geonymClik() {
-      var _this2 = this;
-
-      var geonym = this.body.querySelector('[button-geonym]');
-      geonym.addEventListener('click', function (e) {
-        e.preventDefault();
-        _this2.emit('geonym_call');
-      }); // addEventListener
-    } // geonym
-
   }]);
 
   return Header;
@@ -14631,7 +14591,7 @@ var Header = function (_BaseWebBase) {
 
 module.exports = Header;
 
-},{"../../basewebbase.js":6,"../../templates/app/header.js":10}],8:[function(require,module,exports){
+},{"../../basewebbase.js":6,"../../templates/app/header.js":9}],8:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -15006,61 +14966,7 @@ var Geonym = function (_BaseWebBase) {
 
 module.exports = Geonym;
 
-},{"../../basewebbase.js":6,"../../templates/geonym/geonym.js":11,"leaflet":2}],9:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _basewebbase = require('../basewebbase.js');
-
-var _basewebbase2 = _interopRequireDefault(_basewebbase);
-
-var _start = require('../templates/start.js');
-
-var _start2 = _interopRequireDefault(_start);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // ----------------------------------------
-// File        : ./src/components/start.js
-// Desciption  : start component.
-// Date        : 2017.03.19 > Fly
-// ----------------------------------------
-
-var Start = function (_BaseWebBase) {
-  _inherits(Start, _BaseWebBase);
-
-  function Start(body) {
-    _classCallCheck(this, Start);
-
-    var _this = _possibleConstructorReturn(this, (Start.__proto__ || Object.getPrototypeOf(Start)).call(this));
-
-    _this.body = body;
-    return _this;
-  }
-
-  _createClass(Start, [{
-    key: 'render',
-    value: function render() {
-      this.body.innerHTML = _start2.default.render();
-    }
-  }, {
-    key: 'clear',
-    value: function clear() {
-      this.body.innerHTML = '';
-    }
-  }]);
-
-  return Start;
-}(_basewebbase2.default);
-
-module.exports = Start;
-
-},{"../basewebbase.js":6,"../templates/start.js":12}],10:[function(require,module,exports){
+},{"../../basewebbase.js":6,"../../templates/geonym/geonym.js":10,"leaflet":2}],9:[function(require,module,exports){
 'use strict';
 
 // -------------------------------------------
@@ -15072,11 +14978,11 @@ module.exports = Start;
 var mustache = require('mustache');
 
 exports.render = function () {
-  var htmlToRender = '\n  <nav class="navbar navbar-fixed-top navbar-light background-white border-bottom-grey">\n    <div class="container">\n\n      <!-- ----- -->\n      <!-- Brand -->\n      <!-- ----- -->\n      <a class="navbar-brand">\n        <img src="../../img/logo_RF.jpg" width="111" height="60" alt="logo">\n        <span>Geonym</span>\n        <span class="align-top beta">beta</span>\n      </a>\n\n      <!-- ---- -->\n      <!-- Menu -->\n      <!-- ---- -->\n      <ul class="nav navbar-nav float-lg-right header-center-middle">\n\n        <li class="nav-item dropdown">\n          <button id="button-menu" type="button" class="btn header-button-menu" data-toggle="dropdown"><i class="fa fa-sign-in"></i></button>\n          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">\n\n            <!-- ------ -->\n            <!-- Geonym -->\n            <!-- ------ -->\n            <a id="button-geonym" class="dropdown-item" button-geonym>\n              <i class="fa fa-barcode color-blue"></i>\n              <span>&nbsp; Geocoding & Geonym...</span>\n            </a>\n\n          </div><!-- dropdown-menu -->\n        </li><!-- nav-item -->\n      </ul><!-- Header menu -->\n\n    </div><!-- Header container -->\n  </nav><!-- Header nav -->\n  ';
+  var htmlToRender = '\n  <nav class="navbar navbar-fixed-top navbar-light background-white border-bottom-grey">\n    <div class="container">\n\n      <!-- ----- -->\n      <!-- Brand -->\n      <!-- ----- -->\n      <a class="navbar-brand">\n        <img src="../../img/logo_RF.jpg" width="111" height="60" alt="logo">\n        <span>Geonym</span>\n        <span class="align-top beta">beta</span>\n      </a>\n\n    </div><!-- Header container -->\n  </nav><!-- Header nav -->\n  ';
   return mustache.render(htmlToRender);
 };
 
-},{"mustache":3}],11:[function(require,module,exports){
+},{"mustache":3}],10:[function(require,module,exports){
 "use strict";
 
 // ----------------------------------------------
@@ -15089,20 +14995,7 @@ exports.render = function () {
   return "\n      <div class=\"content\">\n        <div class=\"container\">\n          <div class=\"row\">\n\n            <!-- ---------- -->\n            <!-- Column #01 -->\n            <!-- ---------- -->\n            <div class=\"col-lg-1\"></div>\n\n\n            <!-- ---------------------- -->\n            <!-- Column #02 > Geocoding -->\n            <!-- ---------------------- -->\n            <div class=\"col-lg-10\">\n\n              <!-- Title -->\n              <div id=\"box-title\" class=\"box-title\">\n                Geocoding & Geonym\n              </div>\n\n              <!-- Content -->\n              <div class=\"box-content\">\n\n                <!-- Form -->\n                <div class=\"container\">\n                <form>\n\n                  <!-- Geocoding -->\n                  <div class=\"form-group row\">\n                    <label class=\"col-lg-3 mt-sm-2\" for=\"data-address\">Adresse, lieu-dit, point d'int\xE9r\xEAt... </label>\n                    <input type=\"text\" class=\"form-control col-lg-6\" id=\"data-address\" data-address placeholder=\"Saisissez une adresse... Ex: 139 Rue de Bercy 75012 Paris\">\n                    <div class=\"col-lg-1\"></div>\n                    <button type=\"submit\" id=\"button-geocoding\" class=\"btn btn-primary col-lg-2\">G\xE9ocodage</button>\n                  </div>\n\n                  <!-- Coordinates to Geonym -->\n                  <div class=\"form-group row\">\n                    <label class=\"col-lg-3 mt-sm-2\" for=\"data-coord-to-geonym\">Coordonn\xE9es </label>\n                    <input type=\"text\" class=\"form-control col-lg-1\" id=\"data-latitude\" data-latitude placeholder=\"Latitude\">\n                    <div class=\"col-lg-1\"></div>\n                    <input type=\"text\" class=\"form-control col-lg-1\" id=\"data-longitude\" data-longitude placeholder=\"Longitude\">\n                    <div class=\"col-lg-4\"></div>\n                    <button type=\"submit\" id=\"button-coord-to-geonym\" class=\"btn btn-primary col-lg-2\">Coord. to Geonym</button>\n                  </div>\n\n                  <!-- Geonym to Coordinates -->\n                  <div class=\"form-group row\">\n                    <label class=\"col-lg-3 mt-sm-2\" for=\"data-opec-to-coord\">Geonym </label>\n                    <input type=\"text\" class=\"form-control col-lg-1\" id=\"data-code\" data-code placeholder=\"Code\">\n                    <div class=\"col-lg-1\"></div>\n                    <input type=\"text\" class=\"form-control col-lg-1\" id=\"data-checksum\" data-checksum placeholder=\"Checksum\">\n                    <div class=\"col-lg-4\"></div>\n                    <button type=\"submit\" id=\"button-geonym-to-coord\" class=\"btn btn-primary col-lg-2\">Geonym to Coord.</button>\n                  </div>\n                </form>\n                </div class=\"container\">\n\n                <br>\n\n                <!-- Users information -->\n                <div id=\"userInfo\"></div>\n\n                <!-- Map -->\n                <div id=\"map\"></div>\n\n              </div><!-- box-content -->\n\n            </div><!-- col-lg-8 -->\n\n            <!-- ---------- -->\n            <!-- Column #03 -->\n            <!-- ---------- -->\n            <div class=\"col-lg-1\"></div>\n\n          </div><!-- row -->\n        </div><!-- container -->\n      </div><!-- content -->\n    ";
 };
 
-},{}],12:[function(require,module,exports){
-"use strict";
-
-// ---------------------------------------
-// File        : ./src/templates/start.js
-// Desciption  : start template.
-// Date        : 2017.03.19 > Fly
-// ---------------------------------------
-
-exports.render = function (start) {
-  return "\n      <div class=\"content\">\n        <div class=\"container\">\n          <div class=\"row\">\n\n            <!-- ---------- -->\n            <!-- Column #01 -->\n            <!-- ---------- -->\n            <div class=\"col-lg-2\"></div>\n\n\n            <!-- ------------------------------- -->\n            <!-- Column #02 > Intro BlaBlaBla... -->\n            <!-- ------------------------------- -->\n            <div class=\"col-lg-8\">\n\n              <!-- Title -->\n              <div id=\"box-title\" class=\"box-title\">\n                Bienvenue\n              </div>\n\n              <!-- Text -->\n              <div class=\"box-content\">\n                <br>\n                Bienvenue sur l'application <strong>Geonym</strong>.\n                <br>\n                <br>\n                <br>\n                <br>\n                <br>\n                <br>\n                <br>\n                <br>\n                <br>\n                <br>\n              </div><!-- box-content -->\n            </div><!-- col-lg-8 -->\n\n            <!-- ---------- -->\n            <!-- Column #03 -->\n            <!-- ---------- -->\n            <div class=\"col-lg-2\"></div>\n\n          </div><!-- row -->\n        </div><!-- container -->\n      </div><!-- content -->\n    ";
-};
-
-},{}],13:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var _app = require('./app.js');
@@ -15123,4 +15016,4 @@ window.onload = function () {
 // Date        : 2017.03.19 > Fly
 // -------------------------------
 
-},{"./app.js":5}]},{},[13]);
+},{"./app.js":5}]},{},[11]);
