@@ -72,7 +72,7 @@ Geonym is based on OpenPostCode project (http://www.openpostcode.org/).
 
 ## Online use
 
-* Go to: http://geonym.fr/
+* Go to: http://geonymo.geonym.fr/
 
 
 ## About
