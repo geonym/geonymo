@@ -42,7 +42,7 @@ exports.render = () => {
                     <div class="col-lg-1"></div>
                     <input type="text" class="form-control col-lg-2" id="data-longitude" data-longitude placeholder="Longitude">
                     <div class="col-lg-2"></div>
-                    <button type="submit" id="button-coord-to-geonym" class="btn btn-primary col-lg-2">Coord. to Geonym</button>
+                    <button type="submit" id="button-coord-to-geonym" class="btn btn-primary col-lg-2">Coord. => Geonym</button>
                   </div>
 
                   <!-- Geonym to Coordinates -->
@@ -52,7 +52,7 @@ exports.render = () => {
                     <div class="col-lg-1"></div>
                     <input type="text" class="form-control col-lg-2" id="data-checksum" data-checksum placeholder="Checksum">
                     <div class="col-lg-2"></div>
-                    <button type="submit" id="button-geonym-to-coord" class="btn btn-primary col-lg-2">Geonym to Coord.</button>
+                    <button type="submit" id="button-geonym-to-coord" class="btn btn-primary col-lg-2">Geonym => Coord.</button>
                   </div>
                 </form>
                 </div class="container">
