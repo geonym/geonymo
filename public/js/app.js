@@ -14666,7 +14666,7 @@ var Geonym = function (_BaseWebBase) {
         originLongitude: -5.45,
         originWide: 15.25,
         originHigh: 10.54,
-        alphabetCode: '6789B5NPQC4MXRD3LWTF2KJHG',
+        alphabetCode: '456783NPR92MXTC1LWVD0KJHF',
         numberOfDigitsForCode: 8,
         alphabetChecksum: '0123456789ACDEFGHJKLMNPQRTUVWXY'
       };
