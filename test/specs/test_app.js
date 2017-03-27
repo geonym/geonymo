@@ -9,7 +9,7 @@ var assert = require('assert')
 describe('webdriver.io page', function () {
   // ------------------------------------
   // Test    : #01
-  // Context : App is not run.
+  // Context : App is not running.
   // Result  : Start page must be loaded.
   // ------------------------------------
   it('> Test > App > #01', function () {
@@ -21,6 +21,6 @@ describe('webdriver.io page', function () {
 
     // Title in the page.
     var pageTitle = browser.getText('#box-title')
-    assert.equal(pageTitle, 'Bienvenue')
+    assert.equal(pageTitle, 'Geocoding & Geonym')
   })
 })
