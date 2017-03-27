@@ -68,8 +68,8 @@ class Geonym extends BaseWebBase {
     // Let's give coordinates & Geonym for this new point.
     document.getElementById('userInfo').innerHTML = `
       <div class="alert alert-info" role="alert">
-      <strong>Coordinates:</strong> [ ` +
-        lat.toFixed(6) + ` ; ` + lon.toFixed(6) + `]
+      <strong>Coordonnées:</strong> [ ` +
+        lat.toFixed(6) + ` ; ` + lon.toFixed(6) + ` ]
       /
       <strong>Geonym:</strong> ` + geonymReturned + `
       </div>
@@ -130,8 +130,8 @@ class Geonym extends BaseWebBase {
             // Let's draw new address Coordinates on the map.
             document.getElementById('userInfo').innerHTML = `
             <div class="alert alert-info" role="alert">
-              <strong>Coordonnées:</strong> [` +
-                lat.toFixed(6) + ` ; ` + lon.toFixed(6) + `]
+              <strong>Coordonnées:</strong> [ ` +
+                lat.toFixed(6) + ` ; ` + lon.toFixed(6) + ` ]
               /
               <strong>Geonym:</strong> ` + geonymReturned + `
             </div>
@@ -197,8 +197,8 @@ class Geonym extends BaseWebBase {
 
       document.getElementById('userInfo').innerHTML = `
         <div class="alert alert-info" role="alert">
-        <strong>Coordonnées:</strong> [` +
-          parseFloat(lat.value).toFixed(6) + ` ; ` + parseFloat(lon.value).toFixed(6) + `]
+        <strong>Coordonnées:</strong> [ ` +
+          parseFloat(lat.value).toFixed(6) + ` ; ` + parseFloat(lon.value).toFixed(6) + ` ]
         /
         <strong>Geonym:</strong> ` + geonymReturned + `
         </div>
@@ -207,7 +207,7 @@ class Geonym extends BaseWebBase {
       map.setView([lat.value, lon.value], 15)
       // Leaflet > ... and create a marker for these coordinates.
       L.marker([lat.value, lon.value]).addTo(map)
-        .bindPopup('[ ' + lat.value + ' ; ' + lon.value + ' ]')
+        .bindPopup('[ ' + parseFloat(lat.value).toFixed(6) + ' ; ' + parseFloat(lon.value).toFixed(6) + ' ]')
         .openPopup()
     } // address.value
   } // formSubmit()
@@ -238,8 +238,8 @@ class Geonym extends BaseWebBase {
         // No error
         document.getElementById('userInfo').innerHTML = `
           <div class="alert alert-info" role="alert">
-          <strong>Coordonnées:</strong> [` +
-            parseFloat(positionResult.latitude).toFixed(6) + ` ; ` + parseFloat(positionResult.longitude).toFixed(6) + `]
+          <strong>Coordonnées:</strong> [ ` +
+            parseFloat(positionResult.latitude).toFixed(6) + ` ; ` + parseFloat(positionResult.longitude).toFixed(6) + ` ]
           /
           <strong>Geonym:</strong> ` + positionResult.geonym + `
           </div>
@@ -248,7 +248,7 @@ class Geonym extends BaseWebBase {
         map.setView([positionResult.latitude, positionResult.longitude], 15)
         // Leaflet > ... and create a marker for these coordinates.
         L.marker([positionResult.latitude, positionResult.longitude]).addTo(map)
-          .bindPopup('[ ' + positionResult.latitude + ' ; ' + positionResult.longitude + ' ]')
+          .bindPopup('[ ' + parseFloat(positionResult.latitude).toFixed(6) + ' ; ' + parseFloat(positionResult.longitude).toFixed(6) + ' ]')
           .openPopup()
       } // else
     } // address.value

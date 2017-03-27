@@ -22,7 +22,7 @@ describe('webdriver.io page', function () {
     browser.click('#button-geonym-to-coord')
 
     var map = browser.getText('#map')
-    var mapAddress = map.search('[ 48.8410312704  ; 2.3779689599999996 ]')
+    var mapAddress = map.search('[ 48.8410312704 ; 2.3779689599999996 ]')
     assert.notEqual(mapAddress, -1)
     var userInfo = browser.getText('#userInfo')
     var userInfoCoordinates = userInfo.search('[48.841031 ; 2.377969]')
