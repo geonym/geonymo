@@ -15,7 +15,6 @@ class Geonym extends BaseWebBase {
     super()
     this.body = body
   }
-
   render () {
     this.body.innerHTML = Template.render()
     this.addEventListener()
@@ -229,6 +228,12 @@ class Geonym extends BaseWebBase {
           <strong>` + positionResult.error + `</strong>
           </div>
           `
+        // Leaflet > Let's go to the ocean
+        map.setView([76.71667, -67.49972], 15)
+        // Leaflet > ... and create a marker for these coordinates.
+        L.marker([76.71667, -67.49972]).addTo(map)
+          .bindPopup("Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
+          .openPopup()
       } else {
         // No error
         document.getElementById('userInfo').innerHTML = `

@@ -14814,6 +14814,10 @@ var Geonym = function (_BaseWebBase) {
         if (positionResult.error) {
           // Error
           document.getElementById('userInfo').innerHTML = '\n          <div class="alert alert-info" role="alert">\n          <strong>' + positionResult.error + '</strong>\n          </div>\n          ';
+          // Leaflet > Let's go to the ocean
+          map.setView([76.71667, -67.49972], 15);
+          // Leaflet > ... and create a marker for these coordinates.
+          L.marker([76.71667, -67.49972]).addTo(map).bindPopup("Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.").openPopup();
         } else {
           // No error
           document.getElementById('userInfo').innerHTML = '\n          <div class="alert alert-info" role="alert">\n          <strong>Coordonn\xE9es:</strong> [' + parseFloat(positionResult.latitude).toFixed(6) + ' ; ' + parseFloat(positionResult.longitude).toFixed(6) + ']\n          /\n          <strong>Geonym:</strong> ' + positionResult.geonym + '\n          </div>\n          ';
