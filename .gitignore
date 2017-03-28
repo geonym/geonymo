@@ -1,5 +1,17 @@
-node_modules
+# logs
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+
+# MacOSX
 .DS_Store
-npm-debug.log
+
+# Test
+test/tools/*
+
+# Node Compilation
 public/js/app.js.*
-test/tools
+
+# Errors
+errorShots

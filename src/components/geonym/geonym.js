@@ -170,6 +170,25 @@ class Geonym extends BaseWebBase {
     lat.value = lat.value.replace(',', '.')
     lon.value = lon.value.replace(',', '.')
 
+    // Check if lon.value && lat.value can be considered to floats.
+    var regex = /^[-+]?[0-9]*\.?[0-9]+$/i
+    var latRegex = regex.test(lat.value)
+    var lonRegex = regex.test(lon.value)
+    if (!latRegex || !lonRegex) {
+      document.getElementById('userInfo').innerHTML = `
+        <div class="alert alert-info" role="alert">
+        <strong>Coordonnées:</strong> Les coordonnées saisies ne sont pas correctes.
+        </div>
+        `
+      // Leaflet > Let's go to the ocean
+      map.setView([76.71667, -67.49972], 15)
+      // Leaflet > ... and create a marker for these coordinates.
+      L.marker([76.71667, -67.49972]).addTo(map)
+        .bindPopup('Les coordonnées saisies ne sont pas correctes.')
+        .openPopup()
+      return null
+    }
+
     if (lat.value && lon.value) {
       // If a position is defined, let's geocode it!
 
@@ -193,6 +212,8 @@ class Geonym extends BaseWebBase {
       }
 
       // Let's calculate Geonym from coordinates.
+      console.log('lon.value: ', lon.value)
+      console.log('lat.value: ', lat.value)
       var geonymReturned = this.getFromPositionToGeonym(lon.value, lat.value, geonym)
 
       document.getElementById('userInfo').innerHTML = `
