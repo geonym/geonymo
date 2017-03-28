@@ -280,4 +280,29 @@ describe('webdriver.io page', function () {
     assert.notEqual(userInfoCoordinates, -1)
   })
 
+  // ---------------------------------------------
+  // Test    : #12
+  // Context : Coordinates to be geonymed.
+  // Result  : Longitude accept negatives values.
+  // ---------------------------------------------
+  it('> Test > Coord_To_Geonym > #12', function () {
+    browser.url('http://localhost:3001')
+
+    var latitude = $('#data-latitude')
+    latitude.setValue('48.85')
+    var longitude = $('#data-longitude')
+    longitude.setValue('-2.35')
+    browser.click('#button-coord-to-geonym')
+
+    var map = browser.getText('#map')
+    var mapPosition = map.search('[ 48.850000 ; -2.350000 ]')
+    assert.notEqual(mapPosition, -1)
+
+    var userInfo = browser.getText('#userInfo')
+    var userInfoCoordinates = userInfo.search('[48.850000 ; -2.350000]')
+    assert.notEqual(userInfoCoordinates, -1)
+    var userInfoGeonym = userInfo.search('N34J-4KN0/X')
+    assert.notEqual(userInfoGeonym, -1)
+  })
+
 })
