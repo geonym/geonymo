@@ -1,5 +1,5 @@
 // --------------------------------------------
-// File        : ./test/specs/test_geocoding.js
+// File        : ./test/specs/test_coord_to_geonym.js
 // Desciption  : Geocoding tests
 // Date        : 2017.03.27 > Fly
 // --------------------------------------
@@ -12,7 +12,7 @@ describe('webdriver.io page', function () {
   // Context : Coordinates to be geonymed.
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #01', function () {
+  it('> Test > Coord_To_Geonym > #01', function () {
     browser.url('http://localhost:3001')
 
     var latitude = $('#data-latitude')
@@ -37,32 +37,7 @@ describe('webdriver.io page', function () {
   // Context : Coordinates to be geonymed.
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #02', function () {
-    browser.url('http://localhost:3001')
-
-    var latitude = $('#data-latitude')
-    latitude.setValue('48,85')
-    var longitude = $('#data-longitude')
-    longitude.setValue('2,35')
-    browser.click('#button-coord-to-geonym')
-
-    var map = browser.getText('#map')
-    var mapPosition = map.search('[ 48.850000 ; 2.350000 ]')
-    assert.notEqual(mapPosition, -1)
-
-    var userInfo = browser.getText('#userInfo')
-    var userInfoCoordinates = userInfo.search('[48.850000 ; 2.350000]')
-    assert.notEqual(userInfoCoordinates, -1)
-    var userInfoGeonym = userInfo.search('PP7F-7K90/T')
-    assert.notEqual(userInfoGeonym, -1)
-  })
-
-  // ----------------------------------------------
-  // Test    : #03
-  // Context : Coordinates to be geonymed.
-  // Result  : Check returned Coordinates & Geonym.
-  // ----------------------------------------------
-  it('> Test > Geocoding > #03', function () {
+  it('> Test > Coord_To_Geonym > #02', function () {
     browser.url('http://localhost:3001')
 
     var latitude = $('#data-latitude')
@@ -83,11 +58,36 @@ describe('webdriver.io page', function () {
   })
 
   // ----------------------------------------------
+  // Test    : #03
+  // Context : Coordinates to be geonymed.
+  // Result  : Check returned Coordinates & Geonym.
+  // ----------------------------------------------
+  it('> Test > Coord_To_Geonym > #03', function () {
+    browser.url('http://localhost:3001')
+
+    var latitude = $('#data-latitude')
+    latitude.setValue('48,85')
+    var longitude = $('#data-longitude')
+    longitude.setValue('2,35')
+    browser.click('#button-coord-to-geonym')
+
+    var map = browser.getText('#map')
+    var mapPosition = map.search('[ 48.850000 ; 2.350000 ]')
+    assert.notEqual(mapPosition, -1)
+
+    var userInfo = browser.getText('#userInfo')
+    var userInfoCoordinates = userInfo.search('[48.850000 ; 2.350000]')
+    assert.notEqual(userInfoCoordinates, -1)
+    var userInfoGeonym = userInfo.search('PP7F-7K90/T')
+    assert.notEqual(userInfoGeonym, -1)
+  })
+
+  // ----------------------------------------------
   // Test    : #04
   // Context : Coordinates to be geonymed.
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #04', function () {
+  it('> Test > Coord_To_Geonym > #04', function () {
     browser.url('http://localhost:3001')
 
     var latitude = $('#data-latitude')
@@ -112,7 +112,7 @@ describe('webdriver.io page', function () {
   // Context : Coordinates to be geonymed.
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #05', function () {
+  it('> Test > Coord_To_Geonym > #05', function () {
     browser.url('http://localhost:3001')
 
     var latitude = $('#data-latitude')
@@ -137,7 +137,7 @@ describe('webdriver.io page', function () {
   // Context : Coordinates to be geonymed.
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #06', function () {
+  it('> Test > Coord_To_Geonym > #06', function () {
     browser.url('http://localhost:3001')
 
     var latitude = $('#data-latitude')
@@ -162,7 +162,7 @@ describe('webdriver.io page', function () {
   // Context : Coordinates to be geonymed.
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #07', function () {
+  it('> Test > Coord_To_Geonym > #07', function () {
     browser.url('http://localhost:3001')
 
     var latitude = $('#data-latitude')
@@ -187,7 +187,7 @@ describe('webdriver.io page', function () {
   // Context : Coordinates to be geonymed.
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #08', function () {
+  it('> Test > Coord_To_Geonym > #08', function () {
     browser.url('http://localhost:3001')
 
     var latitude = $('#data-latitude')
@@ -212,7 +212,7 @@ describe('webdriver.io page', function () {
   // Context : Coordinates to be geonymed.
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #09', function () {
+  it('> Test > Coord_To_Geonym > #09', function () {
     browser.url('http://localhost:3001')
 
     var latitude = $('#data-latitude')
@@ -237,7 +237,7 @@ describe('webdriver.io page', function () {
   // Context : Coordinates to be geonymed.
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #10', function () {
+  it('> Test > Coord_To_Geonym > #10', function () {
     browser.url('http://localhost:3001')
 
     var latitude = $('#data-latitude')
@@ -255,6 +255,29 @@ describe('webdriver.io page', function () {
     assert.notEqual(userInfoCoordinates, -1)
     var userInfoGeonym = userInfo.search('4444-4444/0')
     assert.notEqual(userInfoGeonym, -1)
+  })
+
+  // --------------------------------------------------------------
+  // Test    : #11
+  // Context : Coordinates to be geonymed.
+  // Result  : Latitude & Longitude are not floats. Error returned.
+  // --------------------------------------------------------------
+  it('> Test > Coord_To_Geonym > #11', function () {
+    browser.url('http://localhost:3001')
+
+    var latitude = $('#data-latitude')
+    latitude.setValue('48;841025')
+    var longitude = $('#data-longitude')
+    longitude.setValue('2;377966')
+    browser.click('#button-coord-to-geonym')
+
+    var map = browser.getText('#map')
+    var mapPosition = map.search('Les coordonnées saisies ne sont pas correctes.')
+    assert.notEqual(mapPosition, -1)
+
+    var userInfo = browser.getText('#userInfo')
+    var userInfoCoordinates = userInfo.search('Les coordonnées saisies ne sont pas correctes.')
+    assert.notEqual(userInfoCoordinates, -1)
   })
 
 })

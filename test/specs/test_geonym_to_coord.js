@@ -1,5 +1,5 @@
 // --------------------------------------------
-// File        : ./test/specs/test_geocoding.js
+// File        : ./test/specs/test_geonym_to_coord.js
 // Desciption  : Geocoding tests
 // Date        : 2017.03.27 > Fly
 // --------------------------------------
@@ -12,7 +12,7 @@ describe('webdriver.io page', function () {
   // Context : Geonym to be decoded.
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #01', function () {
+  it('> Test > Geonym_To_Coord > #01', function () {
     browser.url('http://localhost:3001')
 
     var code = $('#data-code')
@@ -36,7 +36,7 @@ describe('webdriver.io page', function () {
   // Context : Check specific geonym
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #02', function () {
+  it('> Test > Geonym_To_Coord > #02', function () {
     browser.url('http://localhost:3001')
 
     var code = $('#data-code')
@@ -60,7 +60,7 @@ describe('webdriver.io page', function () {
   // Context : Check specific geonym
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #03', function () {
+  it('> Test > Geonym_To_Coord > #03', function () {
     browser.url('http://localhost:3001')
 
     var code = $('#data-code')
@@ -84,7 +84,7 @@ describe('webdriver.io page', function () {
   // Context : Check specific geonym
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #04', function () {
+  it('> Test > Geonym_To_Coord > #04', function () {
     browser.url('http://localhost:3001')
 
     var code = $('#data-code')
@@ -108,7 +108,7 @@ describe('webdriver.io page', function () {
   // Context : Check specific geonym
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #05', function () {
+  it('> Test > Geonym_To_Coord > #05', function () {
     browser.url('http://localhost:3001')
 
     var code = $('#data-code')
@@ -132,7 +132,7 @@ describe('webdriver.io page', function () {
   // Context : Check specific geonym
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #06', function () {
+  it('> Test > Geonym_To_Coord > #06', function () {
     browser.url('http://localhost:3001')
 
     var code = $('#data-code')
@@ -156,7 +156,7 @@ describe('webdriver.io page', function () {
   // Context : Check specific geonym
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #07', function () {
+  it('> Test > Geonym_To_Coord > #07', function () {
     browser.url('http://localhost:3001')
 
     var code = $('#data-code')
@@ -180,7 +180,7 @@ describe('webdriver.io page', function () {
   // Context : Check specific geonym
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #08', function () {
+  it('> Test > Geonym_To_Coord > #08', function () {
     browser.url('http://localhost:3001')
 
     var code = $('#data-code')
@@ -204,7 +204,7 @@ describe('webdriver.io page', function () {
   // Context : Check specific geonym
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #09', function () {
+  it('> Test > Geonym_To_Coord > #09', function () {
     browser.url('http://localhost:3001')
 
     var code = $('#data-code')
@@ -228,7 +228,7 @@ describe('webdriver.io page', function () {
   // Context : Check specific geonym
   // Result  : Check returned Coordinates & Geonym.
   // ----------------------------------------------
-  it('> Test > Geocoding > #10', function () {
+  it('> Test > Geonym_To_Coord > #10', function () {
     browser.url('http://localhost:3001')
 
     var code = $('#data-code')
