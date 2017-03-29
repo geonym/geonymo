@@ -199,6 +199,12 @@ class Geonym extends BaseWebBase {
           <strong>Coordonnées:</strong> Les coordonnées saisies sont en dehors de la grille France métropolitaine.
           </div>
           `
+        // Leaflet > Let's go to the ocean
+        map.setView([76.71667, -67.49972], 15)
+        // Leaflet > ... and create a marker for these coordinates.
+        L.marker([76.71667, -67.49972]).addTo(map)
+          .bindPopup('Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
+          .openPopup()
         return null
       }
       // If lon is out of grid, return an error message.
@@ -208,12 +214,16 @@ class Geonym extends BaseWebBase {
           <strong>Coordonnées:</strong> Les coordonnées saisies sont en dehors de la grille France métropolitaine.
           </div>
           `
+        // Leaflet > Let's go to the ocean
+        map.setView([76.71667, -67.49972], 15)
+        // Leaflet > ... and create a marker for these coordinates.
+        L.marker([76.71667, -67.49972]).addTo(map)
+          .bindPopup('Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
+          .openPopup()
         return null
       }
 
       // Let's calculate Geonym from coordinates.
-      console.log('lon.value: ', lon.value)
-      console.log('lat.value: ', lat.value)
       var geonymReturned = this.getFromPositionToGeonym(lon.value, lat.value, geonym)
 
       document.getElementById('userInfo').innerHTML = `

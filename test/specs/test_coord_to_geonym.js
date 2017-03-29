@@ -326,7 +326,7 @@ describe('webdriver.io page', function () {
     // Check map div
     var map = browser.getText('#map')
     var errorSolution = /Les coordonnées saisies sont en dehors de la grille France métropolitaine./i
-    // assert.strictEqual(errorSolution.test(map), true)
+    assert.strictEqual(errorSolution.test(map), true)
 
     // Check userInfo div
     var userInfo = browser.getText('#userInfo')
@@ -349,7 +349,7 @@ describe('webdriver.io page', function () {
     // Check map div
     var map = browser.getText('#map')
     var errorSolution = /Les coordonnées saisies sont en dehors de la grille France métropolitaine./i
-    // assert.strictEqual(errorSolution.test(map), true)
+    assert.strictEqual(errorSolution.test(map), true)
 
     // Check userInfo div
     var userInfo = browser.getText('#userInfo')
@@ -372,7 +372,7 @@ describe('webdriver.io page', function () {
     // Check map div
     var map = browser.getText('#map')
     var errorSolution = /Les coordonnées saisies sont en dehors de la grille France métropolitaine./i
-    // assert.strictEqual(errorSolution.test(map), true)
+    assert.strictEqual(errorSolution.test(map), true)
 
     // Check userInfo div
     var userInfo = browser.getText('#userInfo')
@@ -395,7 +395,7 @@ describe('webdriver.io page', function () {
     // Check map div
     var map = browser.getText('#map')
     var errorSolution = /Les coordonnées saisies sont en dehors de la grille France métropolitaine./i
-    // assert.strictEqual(errorSolution.test(map), true)
+    assert.strictEqual(errorSolution.test(map), true)
 
     // Check userInfo div
     var userInfo = browser.getText('#userInfo')
