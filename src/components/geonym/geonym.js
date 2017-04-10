@@ -21,7 +21,7 @@ class Geonym extends BaseWebBase {
   }
   addEventListener () {
     this.formSwitcher()
-    // this.formGeocodingSubmit()
+    this.formGeocodingSubmit()
   }
   formSwitcher () {
     // form buttons
@@ -90,7 +90,7 @@ class Geonym extends BaseWebBase {
     // From Geonym to Coordinates.
     buttonGeonymToCoord.addEventListener('click', (e) => {
       e.preventDefault()
-      this.formGeonymToCoordSubmit(map, geonym)
+      this.formGeonymToCoordSubmit(map)
     })
 
     // At start...
@@ -98,7 +98,9 @@ class Geonym extends BaseWebBase {
         inputLatitude.value === '' &&
         inputLongitude.value === '' &&
         inputCode.value === '' &&
-        inputChecksum.value === '') { this.formGeocodingSubmit(map, geonym) }
+        inputChecksum.value === '') {
+      this.formGeocodingSubmit(map, geonym)
+    }
   }
 
   formGeocodingSubmit (map, geonym) {
@@ -242,47 +244,70 @@ class Geonym extends BaseWebBase {
         .openPopup()
     } // address.value
   } // formSubmit()
-  formGeonymToCoordSubmit (map, geonym) {
+  formGeonymToCoordSubmit (map) {
     // Call api to geocode coordinates.
-    const geonymCode = this.body.querySelector('[data-code]')
-    const geonymChecksum = this.body.querySelector('[data-checksum]')
+    var geonymCode = this.body.querySelector('[data-code]')
+    var geonymChecksum = this.body.querySelector('[data-checksum]')
+
+    geonymCode.value = geonymCode.value.toUpperCase()
+    geonymChecksum.value = geonymChecksum.value.toUpperCase()
 
     if (geonymCode.value && geonymChecksum.value) {
       // If a Geonym is defined, let's draw it!
 
       // Let's calculate Geonym from coordinates.
-      var positionResult = this.getFromGeonymToPosition(geonymCode.value, geonymChecksum.value, geonym)
-      if (positionResult.error) {
-        // Error
-        document.getElementById('userInfo').innerHTML = `
-          <div class="alert alert-info" role="alert">
-          <strong>` + positionResult.error + `</strong>
-          </div>
-          `
-        // Leaflet > Let's go to the ocean
-        map.setView([76.71667, -67.49972], 15)
-        // Leaflet > ... and create a marker for these coordinates.
-        L.marker([76.71667, -67.49972]).addTo(map)
-          .bindPopup("Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
-          .openPopup()
-      } else {
-        // No error
-        document.getElementById('userInfo').innerHTML = `
-          <div class="alert alert-info" role="alert">
-          <strong>Coordonnées:</strong> [ ` +
-            parseFloat(positionResult.latitude).toFixed(6) + ` ; ` + parseFloat(positionResult.longitude).toFixed(6) + ` ]
-          /
-          <strong>Geonym:</strong> ` + positionResult.geonym + `
-          </div>
-          `
-        // Leaflet > Let's go to our new coordinates...
-        map.setView([positionResult.latitude, positionResult.longitude], 15)
-        // Leaflet > ... and create a marker for these coordinates.
-        L.marker([positionResult.latitude, positionResult.longitude]).addTo(map)
-          .bindPopup('[ ' + parseFloat(positionResult.latitude).toFixed(6) + ' ; ' + parseFloat(positionResult.longitude).toFixed(6) + ' ]')
-          .openPopup()
-      } // else
-    } // address.value
+      const URLGeonym = {
+        method: 'GET',
+        url: `${this.URLGeonym}/?geonym=`.concat(geonymCode.value)
+      }
+      this.request(URLGeonym, (err, res, data) => {
+        if (err) {
+          document.getElementById('userInfo').innerHTML = `
+            <div class="alert alert-info" role="alert">
+            <strong>` + err + `</strong>
+            </div>
+            `
+          // Leaflet > Let's go to the ocean
+          map.setView([76.71667, -67.49972], 15)
+          // Leaflet > ... and create a marker for these coordinates.
+          L.marker([76.71667, -67.49972]).addTo(map)
+            .bindPopup("Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
+            .openPopup()
+        } else {
+          var positionResult = JSON.parse(data)
+
+          if ((positionResult.properties.geonym === (geonymCode.value.substring(0, 4) + geonymCode.value.substring(5, 9))) &&
+            (positionResult.properties.checksum === geonymChecksum.value)) {
+            document.getElementById('userInfo').innerHTML = `
+              <div class="alert alert-info" role="alert">
+              <strong>Coordonnées:</strong> [ ` +
+                parseFloat(positionResult.properties.lat).toFixed(6) + ` ; ` + parseFloat(positionResult.properties.lon).toFixed(6) + ` ]
+              /
+              <strong>Geonym:</strong> ` + geonymCode.value + `/` + geonymChecksum.value + `
+              </div>
+            `
+            // Leaflet > Let's go to our new coordinates...
+            map.setView([positionResult.properties.lat, positionResult.properties.lon], 15)
+            // Leaflet > ... and create a marker for these coordinates.
+            L.marker([positionResult.properties.lat, positionResult.properties.lon]).addTo(map)
+              .bindPopup('[ ' + parseFloat(positionResult.properties.lat).toFixed(6) + ' ; ' + parseFloat(positionResult.properties.lon).toFixed(6) + ' ]')
+              .openPopup()
+          } else {
+            document.getElementById('userInfo').innerHTML = `
+              <div class="alert alert-info" role="alert">
+              <strong>Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.</strong>
+              </div>
+              `
+            // Leaflet > Let's go to the ocean
+            map.setView([76.71667, -67.49972], 15)
+            // Leaflet > ... and create a marker for these coordinates.
+            L.marker([76.71667, -67.49972]).addTo(map)
+              .bindPopup("Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
+              .openPopup()
+          } // else
+        } // else
+      }) // request urlGeonym
+    } // geonym.code && geonym.value defined.
   } // formSubmit()
 
   getFromPositionToGeonym (paramLongitude, paramLatitude, geonym) {

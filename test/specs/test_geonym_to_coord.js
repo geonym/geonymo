@@ -19,6 +19,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('1')
     browser.click('#button-geonym-to-coord')
+    browser.pause(1000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -47,6 +48,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('T')
     browser.click('#button-geonym-to-coord')
+    browser.pause(1000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -75,6 +77,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('C')
     browser.click('#button-geonym-to-coord')
+    browser.pause(1000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -103,6 +106,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('0')
     browser.click('#button-geonym-to-coord')
+    browser.pause(1000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -131,6 +135,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('K')
     browser.click('#button-geonym-to-coord')
+    browser.pause(1000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -159,6 +164,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('V')
     browser.click('#button-geonym-to-coord')
+    browser.pause(1000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -187,6 +193,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('V')
     browser.click('#button-geonym-to-coord')
+    browser.pause(1000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -215,6 +222,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('5')
     browser.click('#button-geonym-to-coord')
+    browser.pause(1000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -243,6 +251,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('0')
     browser.click('#button-geonym-to-coord')
+    browser.pause(1000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -259,25 +268,26 @@ describe('webdriver.io page', function () {
     assert.strictEqual(geonymSolution.test(userInfo), true)
   })
 
-  // ------------------------------------------------
-  // Test: #10 - Check that Geonym gives coordinates.
-  // ------------------------------------------------
+  // ---------------------------------------
+  // Test: #10 - Check that Geonym is wrong.
+  // ---------------------------------------
   it('> Test > Geonym_To_Coord > #10', function () {
-    browser.url('http://localhost:3001')
+  browser.url('http://localhost:3001')
 
-    // Insert data into the form
-    var code = $('#data-code')
-    code.setValue('4444-4444')
-    var checksum = $('#data-checksum')
-    checksum.setValue('9')
-    browser.click('#button-geonym-to-coord')
+  // Insert data into the form
+  var code = $('#data-code')
+  code.setValue('4444-4444')
+  var checksum = $('#data-checksum')
+  checksum.setValue('9')
+  browser.click('#button-geonym-to-coord')
+  browser.pause(1000)
 
-    // Check map div
-    var map = browser.getText('#map')
-    var errorSolution = /Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance./i
-    assert.strictEqual(errorSolution.test(map), true)
+  // Check map div
+  var map = browser.getText('#map')
+  var errorSolution = /Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance./i
+  assert.strictEqual(errorSolution.test(map), true)
 
-    var userInfo = browser.getText('#userInfo')
-    assert.strictEqual(errorSolution.test(userInfo), true)
+  var userInfo = browser.getText('#userInfo')
+  assert.strictEqual(errorSolution.test(userInfo), true)
   })
 })
