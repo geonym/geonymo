@@ -12,6 +12,7 @@ class BaseWebBase extends TinyEmitter {
     super()
     this.request = request
     this.URLGeocoding = 'http://api-adresse.data.gouv.fr'
+    this.URLGeonym = 'http://api.geonym.fr'
   }
 }
 
