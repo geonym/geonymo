@@ -118,6 +118,7 @@ class Geonym extends BaseWebBase {
         if (err) {
           res.status(412).json({msg: err.message})
         } else {
+          // Data are collected.
           var address = JSON.parse(data)
 
           if (address.features.length > 0) {
@@ -130,27 +131,20 @@ class Geonym extends BaseWebBase {
             var geonymReturned = this.getFromPositionToGeonym(lon, lat, geonym)
 
             // Let's draw new address Coordinates on the map.
-            document.getElementById('userInfo').innerHTML = `
-            <div class="alert alert-info" role="alert">
-              <strong>Coordonnées:</strong> [ ` +
-                lat.toFixed(6) + ` ; ` + lon.toFixed(6) + ` ]
-              /
-              <strong>Geonym:</strong> ` + geonymReturned + `
-            </div>
-            `
-            // Leaflet > Let's go to our new coordinates...
-            map.setView([lat, lon], 15)
-            // Leaflet > ... and create a marker for these coordinates.
-            L.marker([lat, lon]).addTo(map)
-              .bindPopup(label)
-              .openPopup()
+            this.userInfoMessage({
+              'Title_01': 'Coordonnées',
+              'Text_01': lat.toFixed(6) + ` ; ` + lon.toFixed(6),
+              'Title_02': 'Geonym',
+              'Text_02': geonymReturned
+            })
+            this.leafletDrawPoint(lat, lon, 15, map, label)
           } else {
             // Address is unknown.
             this.userInfoError("L'adresse que vous recherchez est inconnue.")
             this.leafletDrawPoint(76.71667, -67.49972, 15, map,
               "L'adresse que vous recherchez est inconnue.")
-          } // address.features.length
-        } // err
+          } // Adress is unknown.
+        } // Data are collected.
       }) // this.request()
     } // address.value
   } // formSubmit()
@@ -195,20 +189,15 @@ class Geonym extends BaseWebBase {
       // Let's calculate Geonym from coordinates.
       var geonymReturned = this.getFromPositionToGeonym(lon.value, lat.value, geonym)
 
-      document.getElementById('userInfo').innerHTML = `
-        <div class="alert alert-info" role="alert">
-        <strong>Coordonnées:</strong> [ ` +
-          parseFloat(lat.value).toFixed(6) + ` ; ` + parseFloat(lon.value).toFixed(6) + ` ]
-        /
-        <strong>Geonym:</strong> ` + geonymReturned + `
-        </div>
-        `
-      // Leaflet > Let's go to our new coordinates...
-      map.setView([lat.value, lon.value], 15)
-      // Leaflet > ... and create a marker for these coordinates.
-      L.marker([lat.value, lon.value]).addTo(map)
-        .bindPopup('[ ' + parseFloat(lat.value).toFixed(6) + ' ; ' + parseFloat(lon.value).toFixed(6) + ' ]')
-        .openPopup()
+      // Let's draw new address Coordinates on the map.
+      this.userInfoMessage({
+        'Title_01': 'Coordonnées',
+        'Text_01': parseFloat(lat.value).toFixed(6) + ` ; ` + parseFloat(lon.value).toFixed(6),
+        'Title_02': 'Geonym',
+        'Text_02': geonymReturned
+      })
+      this.leafletDrawPoint(lat.value, lon.value, 15, map,
+        '[ ' + parseFloat(lat.value).toFixed(6) + ' ; ' + parseFloat(lon.value).toFixed(6) + ' ]')
     } // address.value
   } // formSubmit()
   formGeonymToCoordSubmit (map) {
@@ -237,21 +226,15 @@ class Geonym extends BaseWebBase {
 
           if ((positionResult.properties.geonym === (geonymCode.value.substring(0, 4) + geonymCode.value.substring(5, 9))) &&
             (positionResult.properties.checksum === geonymChecksum.value)) {
-            // Geonym is OK.
-            document.getElementById('userInfo').innerHTML = `
-              <div class="alert alert-info" role="alert">
-              <strong>Coordonnées:</strong> [ ` +
-                parseFloat(positionResult.properties.lat).toFixed(6) + ` ; ` + parseFloat(positionResult.properties.lon).toFixed(6) + ` ]
-              /
-              <strong>Geonym:</strong> ` + geonymCode.value + `/` + geonymChecksum.value + `
-              </div>
-            `
-            // Leaflet > Let's go to our new coordinates...
-            map.setView([positionResult.properties.lat, positionResult.properties.lon], 15)
-            // Leaflet > ... and create a marker for these coordinates.
-            L.marker([positionResult.properties.lat, positionResult.properties.lon]).addTo(map)
-              .bindPopup('[ ' + parseFloat(positionResult.properties.lat).toFixed(6) + ' ; ' + parseFloat(positionResult.properties.lon).toFixed(6) + ' ]')
-              .openPopup()
+            // Geonym is OK. Let's draw new address Coordinates on the map.
+            this.userInfoMessage({
+              'Title_01': 'Coordonnées',
+              'Text_01': parseFloat(positionResult.properties.lat).toFixed(6) + ` ; ` + parseFloat(positionResult.properties.lon).toFixed(6),
+              'Title_02': 'Geonym',
+              'Text_02': geonymCode.value + `/` + geonymChecksum.value
+            })
+            this.leafletDrawPoint(positionResult.properties.lat, positionResult.properties.lon, 15, map,
+              '[ ' + parseFloat(positionResult.properties.lat).toFixed(6) + ' ; ' + parseFloat(positionResult.properties.lon).toFixed(6) + ' ]')
           } else {
             // Incorrect Geonym. Try again.
             this.userInfoError("Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
@@ -410,6 +393,17 @@ class Geonym extends BaseWebBase {
       <div class="alert alert-info" role="alert">
       <strong>` + paramMessage + `</strong>
       </div>
+    `
+  }
+  userInfoMessage (paramUserInfoText) {
+    document.getElementById('userInfo').innerHTML = `
+    <div class="alert alert-info" role="alert">
+      <strong>` + paramUserInfoText.Title_01 + `:</strong> [ ` +
+        paramUserInfoText.Text_01 + ` ]
+      /
+      <strong>` + paramUserInfoText.Title_02 + `:</strong> ` +
+      paramUserInfoText.Text_02 + `
+    </div>
     `
   }
 } // Class Geonym
