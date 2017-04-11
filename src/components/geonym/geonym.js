@@ -146,18 +146,9 @@ class Geonym extends BaseWebBase {
               .openPopup()
           } else {
             // Address is unknown.
-            document.getElementById('userInfo').innerHTML = `
-              <div class="alert alert-warning" role="alert">
-                <strong>Adresse</strong> > L'adresse que vous recherchez est inconnue.
-              </div>
-              `
-
-            // Leaflet > Let's go to the ocean
-            map.setView([76.71667, -67.49972], 15)
-            // Leaflet > ... and create a marker for these coordinates.
-            L.marker([76.71667, -67.49972]).addTo(map)
-              .bindPopup("L'adresse que vous recherchez est inconnue.")
-              .openPopup()
+            this.userInfoError("L'adresse que vous recherchez est inconnue.")
+            this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+              "L'adresse que vous recherchez est inconnue.")
           } // address.features.length
         } // err
       }) // this.request()
@@ -177,17 +168,9 @@ class Geonym extends BaseWebBase {
     var latRegex = regex.test(lat.value)
     var lonRegex = regex.test(lon.value)
     if (!latRegex || !lonRegex) {
-      document.getElementById('userInfo').innerHTML = `
-        <div class="alert alert-info" role="alert">
-        <strong>Coordonnées:</strong> Les coordonnées saisies ne sont pas correctes.
-        </div>
-        `
-      // Leaflet > Let's go to the ocean
-      map.setView([76.71667, -67.49972], 15)
-      // Leaflet > ... and create a marker for these coordinates.
-      L.marker([76.71667, -67.49972]).addTo(map)
-        .bindPopup('Les coordonnées saisies ne sont pas correctes.')
-        .openPopup()
+      this.userInfoError('Les coordonnées saisies ne sont pas correctes.')
+      this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+        'Les coordonnées saisies ne sont pas correctes.')
       return null
     }
 
@@ -196,32 +179,16 @@ class Geonym extends BaseWebBase {
 
       // If lat is out of grid, return an error message.
       if (lat.value < geonym.originLatitude - geonym.originHigh || lat.value > geonym.originLatitude) {
-        document.getElementById('userInfo').innerHTML = `
-          <div class="alert alert-info" role="alert">
-          <strong>Coordonnées:</strong> Les coordonnées saisies sont en dehors de la grille France métropolitaine.
-          </div>
-          `
-        // Leaflet > Let's go to the ocean
-        map.setView([76.71667, -67.49972], 15)
-        // Leaflet > ... and create a marker for these coordinates.
-        L.marker([76.71667, -67.49972]).addTo(map)
-          .bindPopup('Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
-          .openPopup()
+        this.userInfoError('Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
+        this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+          'Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
         return null
       }
       // If lon is out of grid, return an error message.
       if (lon.value < geonym.originLongitude || lon.value > geonym.originLongitude + geonym.originWide) {
-        document.getElementById('userInfo').innerHTML = `
-          <div class="alert alert-info" role="alert">
-          <strong>Coordonnées:</strong> Les coordonnées saisies sont en dehors de la grille France métropolitaine.
-          </div>
-          `
-        // Leaflet > Let's go to the ocean
-        map.setView([76.71667, -67.49972], 15)
-        // Leaflet > ... and create a marker for these coordinates.
-        L.marker([76.71667, -67.49972]).addTo(map)
-          .bindPopup('Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
-          .openPopup()
+        this.userInfoError('Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
+        this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+          'Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
         return null
       }
 
@@ -262,22 +229,15 @@ class Geonym extends BaseWebBase {
       }
       this.request(URLGeonym, (err, res, data) => {
         if (err) {
-          document.getElementById('userInfo').innerHTML = `
-            <div class="alert alert-info" role="alert">
-            <strong>` + err + `</strong>
-            </div>
-            `
-          // Leaflet > Let's go to the ocean
-          map.setView([76.71667, -67.49972], 15)
-          // Leaflet > ... and create a marker for these coordinates.
-          L.marker([76.71667, -67.49972]).addTo(map)
-            .bindPopup("Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
-            .openPopup()
+          this.userInfoError(err)
+          this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+            "Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
         } else {
           var positionResult = JSON.parse(data)
 
           if ((positionResult.properties.geonym === (geonymCode.value.substring(0, 4) + geonymCode.value.substring(5, 9))) &&
             (positionResult.properties.checksum === geonymChecksum.value)) {
+            // Geonym is OK.
             document.getElementById('userInfo').innerHTML = `
               <div class="alert alert-info" role="alert">
               <strong>Coordonnées:</strong> [ ` +
@@ -293,17 +253,10 @@ class Geonym extends BaseWebBase {
               .bindPopup('[ ' + parseFloat(positionResult.properties.lat).toFixed(6) + ' ; ' + parseFloat(positionResult.properties.lon).toFixed(6) + ' ]')
               .openPopup()
           } else {
-            document.getElementById('userInfo').innerHTML = `
-              <div class="alert alert-info" role="alert">
-              <strong>Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.</strong>
-              </div>
-              `
-            // Leaflet > Let's go to the ocean
-            map.setView([76.71667, -67.49972], 15)
-            // Leaflet > ... and create a marker for these coordinates.
-            L.marker([76.71667, -67.49972]).addTo(map)
-              .bindPopup("Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
-              .openPopup()
+            // Incorrect Geonym. Try again.
+            this.userInfoError("Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
+            this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+              "Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
           } // else
         } // else
       }) // request urlGeonym
@@ -443,7 +396,22 @@ class Geonym extends BaseWebBase {
     // Pad a value with '0' on the left.
     return (value.toString().length < length) ? this.padLeft('0' + value, length) : value
   }
-
+  leafletDrawPoint (paramLatitude, paramLongitude, paramZoom, paramMap, paramMessage) {
+    // Leaflet > Go to map coordinates.
+    paramMap.setView([paramLatitude, paramLongitude], paramZoom)
+    // Leaflet > ... and create a marker for these coordinates.
+    L.marker([paramLatitude, paramLongitude]).addTo(paramMap)
+      .bindPopup(paramMessage)
+      .openPopup()
+  }
+  userInfoError (paramMessage) {
+    // Put a message into userInfo div.
+    document.getElementById('userInfo').innerHTML = `
+      <div class="alert alert-info" role="alert">
+      <strong>` + paramMessage + `</strong>
+      </div>
+    `
+  }
 } // Class Geonym
 
 module.exports = Geonym
