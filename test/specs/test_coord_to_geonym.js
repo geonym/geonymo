@@ -259,9 +259,9 @@ describe('webdriver.io page', function () {
     assert.strictEqual(geonymSolution.test(userInfo), true)
   })
 
-  // ---------------------------------------------------------
-  // Test: #10 - Check that Geonym corresponds to coordinates.
-  // ---------------------------------------------------------
+  // ---------------------------------------------------------------
+  // Test: #10 - Coordinates out of the grid (longitude & latitude).
+  // ---------------------------------------------------------------
   it('> Test > Coord_To_Geonym > #10', function () {
     browser.url('http://localhost:3001')
 
@@ -274,22 +274,17 @@ describe('webdriver.io page', function () {
 
     // Check map div
     var map = browser.getText('#map')
-    var latitudeSolution = /51.450000/i
-    var longitudeSolution = /-5.450000/i
-    assert.strictEqual(latitudeSolution.test(map), true)
-    assert.strictEqual(longitudeSolution.test(map), true)
+    var errorSolution = /Les coordonnées renseignées sont en dehors de la grille définie./i
+    assert.strictEqual(errorSolution.test(map), true)
 
     // Check userInfo div
     var userInfo = browser.getText('#userInfo')
-    assert.strictEqual(latitudeSolution.test(userInfo), true)
-    assert.strictEqual(longitudeSolution.test(userInfo), true)
-    var geonymSolution = /4444-4444\/0/i
-    assert.strictEqual(geonymSolution.test(userInfo), true)
+    assert.strictEqual(errorSolution.test(userInfo), true)
   })
 
-  // --------------------------------------------------------------------
-  // Test: #11 - If latitude or longitude are not floats, return a error.
-  // --------------------------------------------------------------------
+  // ------------------------------------------------------------------------------
+  // Test: #11 - Coordinates out of the grid (longitude & latitude are not floats.)
+  // ------------------------------------------------------------------------------
   it('> Test > Coord_To_Geonym > #11', function () {
     browser.url('http://localhost:3001')
 
@@ -310,9 +305,9 @@ describe('webdriver.io page', function () {
     assert.strictEqual(errorSolution.test(userInfo), true)
   })
 
-  // --------------------------------------
-  // Test: #12 - latitude must be <= 51.45.
-  // --------------------------------------
+  // ------------------------------------------------------------
+  // Test: #12 - Coordinates out of the grid (latitude too high).
+  // ------------------------------------------------------------
   it('> Test > Coord_To_Geonym > #12', function () {
     browser.url('http://localhost:3001')
 
@@ -325,7 +320,7 @@ describe('webdriver.io page', function () {
 
     // Check map div
     var map = browser.getText('#map')
-    var errorSolution = /Les coordonnées saisies sont en dehors de la grille France métropolitaine./i
+    var errorSolution = /Les coordonnées renseignées sont en dehors de la grille définie./i
     assert.strictEqual(errorSolution.test(map), true)
 
     // Check userInfo div
@@ -333,9 +328,9 @@ describe('webdriver.io page', function () {
     assert.strictEqual(errorSolution.test(userInfo), true)
   })
 
-  // --------------------------------------
-  // Test: #13 - latitude must be >= 40.91.
-  // --------------------------------------
+  // -------------------------------------------------------------
+  // Test: #13 - Coordinates out of the grid (latitude too small).
+  // -------------------------------------------------------------
   it('> Test > Coord_To_Geonym > #13', function () {
     browser.url('http://localhost:3001')
 
@@ -348,7 +343,7 @@ describe('webdriver.io page', function () {
 
     // Check map div
     var map = browser.getText('#map')
-    var errorSolution = /Les coordonnées saisies sont en dehors de la grille France métropolitaine./i
+    var errorSolution = /Les coordonnées renseignées sont en dehors de la grille définie./i
     assert.strictEqual(errorSolution.test(map), true)
 
     // Check userInfo div
@@ -356,9 +351,9 @@ describe('webdriver.io page', function () {
     assert.strictEqual(errorSolution.test(userInfo), true)
   })
 
-  // ---------------------------------------
-  // Test: #14 - longitude must be >= -5.45.
-  // ---------------------------------------
+  // --------------------------------------------------------------
+  // Test: #14 - Coordinates out of the grid (longitude too small).
+  // --------------------------------------------------------------
   it('> Test > Coord_To_Geonym > #14', function () {
     browser.url('http://localhost:3001')
 
@@ -371,7 +366,7 @@ describe('webdriver.io page', function () {
 
     // Check map div
     var map = browser.getText('#map')
-    var errorSolution = /Les coordonnées saisies sont en dehors de la grille France métropolitaine./i
+    var errorSolution = /Les coordonnées renseignées sont en dehors de la grille définie./i
     assert.strictEqual(errorSolution.test(map), true)
 
     // Check userInfo div
@@ -379,9 +374,9 @@ describe('webdriver.io page', function () {
     assert.strictEqual(errorSolution.test(userInfo), true)
   })
 
-  // --------------------------------------
-  // Test: #15 - longitude must be <= 9.80.
-  // --------------------------------------
+  // -------------------------------------------------------------
+  // Test: #15 - Coordinates out of the grid (longitude too high).
+  // -------------------------------------------------------------
   it('> Test > Coord_To_Geonym > #15', function () {
     browser.url('http://localhost:3001')
 
@@ -394,7 +389,7 @@ describe('webdriver.io page', function () {
 
     // Check map div
     var map = browser.getText('#map')
-    var errorSolution = /Les coordonnées saisies sont en dehors de la grille France métropolitaine./i
+    var errorSolution = /Les coordonnées renseignées sont en dehors de la grille définie./i
     assert.strictEqual(errorSolution.test(map), true)
 
     // Check userInfo div
