@@ -171,35 +171,51 @@ class Geonym extends BaseWebBase {
     if (lat.value && lon.value) {
       // If a position is defined, let's geocode it!
 
-      // If lat is out of grid, return an error message.
-      if (lat.value < geonym.originLatitude - geonym.originHigh || lat.value > geonym.originLatitude) {
-        this.userInfoError('Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
-        this.leafletDrawPoint(76.71667, -67.49972, 15, map,
-          'Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
-        return null
-      }
-      // If lon is out of grid, return an error message.
-      if (lon.value < geonym.originLongitude || lon.value > geonym.originLongitude + geonym.originWide) {
-        this.userInfoError('Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
-        this.leafletDrawPoint(76.71667, -67.49972, 15, map,
-          'Les coordonnées saisies sont en dehors de la grille France métropolitaine.')
-        return null
-      }
-
       // Let's calculate Geonym from coordinates.
-      var geonymReturned = this.getFromPositionToGeonym(lon.value, lat.value, geonym)
+      const URLGeonym = {
+        method: 'GET',
+        url: `${this.URLGeonym}/?` +
+          `lat=` + lat.value +
+          `&lon=` + lon.value
+      }
+      this.request(URLGeonym, (err, res, data) => {
+        if (err) {
+          // Error
+          this.userInfoError(err)
+          this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+            "Il n'existe pas de coordonnées.")
+        } else {
+          var positionResult = JSON.parse(data)
 
-      // Let's draw new address Coordinates on the map.
-      this.userInfoMessage({
-        'Title_01': 'Coordonnées',
-        'Text_01': parseFloat(lat.value).toFixed(6) + ` ; ` + parseFloat(lon.value).toFixed(6),
-        'Title_02': 'Geonym',
-        'Text_02': geonymReturned
-      })
-      this.leafletDrawPoint(lat.value, lon.value, 15, map,
-        '[ ' + parseFloat(lat.value).toFixed(6) + ' ; ' + parseFloat(lon.value).toFixed(6) + ' ]')
-    } // address.value
-  } // formSubmit()
+          // Some coordinates received ?
+          if (!positionResult.properties) {
+            // No coordinates received.
+            var userInfoText =
+              'Les coordonnées renseignées sont en dehors de la grille définie. ' +
+              '( Plage de longitude autorisée : ]' +
+              positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ' +
+              ' / Plage de latitude autorisée : ]' +
+              positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ). '
+            this.userInfoError(userInfoText)
+            this.leafletDrawPoint(76.71667, -67.49972, 15, map, userInfoText)
+          } else {
+            // Coordinates received. Let's draw new coordinates on the map.
+            this.userInfoMessage({
+              'Title_01': 'Coordonnées',
+              'Text_01': parseFloat(lat.value).toFixed(6) + ` ; ` + parseFloat(lon.value).toFixed(6),
+              'Title_02': 'Geonym',
+              'Text_02':
+                positionResult.properties.geonym.substring(0, 4) + `-` +
+                positionResult.properties.geonym.substring(4, 8) + `/` +
+                positionResult.properties.checksum
+            })
+            this.leafletDrawPoint(lat.value, lon.value, 15, map,
+              '[ ' + parseFloat(lat.value).toFixed(6) + ' ; ' + parseFloat(lon.value).toFixed(6) + ' ]')
+          } // else (coordinates received or not received.)
+        } // else (error / No Error)
+      }) // this.request
+    } // if lat.value & lon.value = OK.
+  } // formCoordToGeonymSubmit()
   formGeonymToCoordSubmit (map) {
     // Call api to geocode coordinates.
     var geonymCode = this.body.querySelector('[data-code]')
