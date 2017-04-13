@@ -54,26 +54,56 @@ class Geonym extends BaseWebBase {
     let lat = 48.841025
     let lon = 2.377966
     var map = L.map('map').setView([ lat, lon ], 15)
+
     // ... add an OpenStreetMap tile layer.
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map)
-    // ... and a beautiful blue marker in Paris with adress.
-    L.marker([lat, lon]).addTo(map)
-      .bindPopup('139 Rue de Bercy 75012 Paris')
-      .openPopup()
 
-    var geonymReturned = this.getFromPositionToGeonym(lon, lat, geonym)
-    // Let's give coordinates & Geonym for this new point.
-    document.getElementById('userInfo').innerHTML = `
-      <div class="alert alert-info" role="alert">
-      <strong>Coordonnées:</strong> [ ` +
-        lat.toFixed(6) + ` ; ` + lon.toFixed(6) + ` ]
-      /
-      <strong>Geonym:</strong> ` + geonymReturned + `
-      </div>
-    `
+    // Let's calculate Geonym from coordinates.
+    const URLGeonym = {
+      method: 'GET',
+      url: `${this.URLGeonym}/?` +
+        `lat=` + lat +
+        `&lon=` + lon
+    }
+    this.request(URLGeonym, (err, res, data) => {
+      if (err) {
+        // Error
+        this.userInfoError(err)
+        this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+          "Il n'existe pas de coordonnées.")
+      } else {
+        var positionResult = JSON.parse(data)
+
+        // Some coordinates received ?
+        if (!positionResult.properties) {
+          // No coordinates received.
+          var userInfoText =
+            'Les coordonnées renseignées sont en dehors de la grille définie. ' +
+            '( Plage de longitude autorisée : ]' +
+            positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ' +
+            ' / Plage de latitude autorisée : ]' +
+            positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ). '
+          this.userInfoError(userInfoText)
+          this.leafletDrawPoint(76.71667, -67.49972, 15, map, userInfoText)
+        } else {
+          // Coordinates received. Let's draw new coordinates on the map.
+          this.userInfoMessage({
+            'Title_01': 'Coordonnées',
+            'Text_01': parseFloat(lat).toFixed(6) + ` ; ` + parseFloat(lon).toFixed(6),
+            'Title_02': 'Geonym',
+            'Text_02':
+              positionResult.properties.geonym.substring(0, 4) + `-` +
+              positionResult.properties.geonym.substring(4, 8) + `/` +
+              positionResult.properties.checksum
+          })
+          this.leafletDrawPoint(lat, lon, 15, map,
+            '[ ' + parseFloat(lat).toFixed(6) + ' ; ' + parseFloat(lon).toFixed(6) + ' ]')
+        } // else (coordinates received or not received.)
+      } // else (error / No Error)
+    }) // this.request
 
     // Adress Geocoding.
     buttonGeocoding.addEventListener('click', (e) => {
@@ -128,16 +158,47 @@ class Geonym extends BaseWebBase {
             var label = address.features[0].properties.label
 
             // Let's calculate Geonym from coordinates.
-            var geonymReturned = this.getFromPositionToGeonym(lon, lat, geonym)
+            const URLGeonym = {
+              method: 'GET',
+              url: `${this.URLGeonym}/?` +
+                `lat=` + lat +
+                `&lon=` + lon
+            }
+            this.request(URLGeonym, (err, res, data) => {
+              if (err) {
+                // Error
+                this.userInfoError(err)
+                this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+                  "Il n'existe pas de coordonnées.")
+              } else {
+                var positionResult = JSON.parse(data)
 
-            // Let's draw new address Coordinates on the map.
-            this.userInfoMessage({
-              'Title_01': 'Coordonnées',
-              'Text_01': lat.toFixed(6) + ` ; ` + lon.toFixed(6),
-              'Title_02': 'Geonym',
-              'Text_02': geonymReturned
-            })
-            this.leafletDrawPoint(lat, lon, 15, map, label)
+                // Some coordinates received ?
+                if (!positionResult.properties) {
+                  // No coordinates received.
+                  var userInfoText =
+                    'Les coordonnées renseignées sont en dehors de la grille définie. ' +
+                    '( Plage de longitude autorisée : ]' +
+                    positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ' +
+                    ' / Plage de latitude autorisée : ]' +
+                    positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ). '
+                  this.userInfoError(userInfoText)
+                  this.leafletDrawPoint(76.71667, -67.49972, 15, map, userInfoText)
+                } else {
+                  // Coordinates received. Let's draw new coordinates on the map.
+                  this.userInfoMessage({
+                    'Title_01': 'Coordonnées',
+                    'Text_01': parseFloat(lat).toFixed(6) + ` ; ` + parseFloat(lon).toFixed(6),
+                    'Title_02': 'Geonym',
+                    'Text_02':
+                      positionResult.properties.geonym.substring(0, 4) + `-` +
+                      positionResult.properties.geonym.substring(4, 8) + `/` +
+                      positionResult.properties.checksum
+                  })
+                  this.leafletDrawPoint(lat, lon, 15, map, label)
+                } // else (coordinates received or not received.)
+              } // else (error / No Error)
+            }) // this.request
           } else {
             // Address is unknown.
             this.userInfoError("L'adresse que vous recherchez est inconnue.")
@@ -262,139 +323,6 @@ class Geonym extends BaseWebBase {
     } // geonym.code && geonym.value defined.
   } // formSubmit()
 
-  getFromPositionToGeonym (paramLongitude, paramLatitude, geonym) {
-    // Latitude calculation
-    var calcLatitude01 = geonym.originLatitude - paramLatitude
-    var calcLatitude02 = calcLatitude01 / geonym.originHigh
-    var calcLatitude03 = Math.floor(calcLatitude02 * Math.pow(Math.sqrt(geonym.alphabetCodeLength), geonym.numberOfDigitsForCode))
-    var calcLatitude04 = this.toRadix(calcLatitude03, Math.sqrt(geonym.alphabetCodeLength))
-
-    // Longitude calculation
-    var calcLongitude01 = paramLongitude - geonym.originLongitude
-    var calcLongitude02 = calcLongitude01 / geonym.originWide
-    var calcLongitude03 = Math.floor(calcLongitude02 * Math.pow(Math.sqrt(geonym.alphabetCodeLength), geonym.numberOfDigitsForCode))
-    var calcLongitude04 = this.toRadix(calcLongitude03, Math.sqrt(geonym.alphabetCodeLength))
-
-    // Let's process to Geonym calculation
-    var latitudeString = this.padLeft(calcLatitude04, 8)
-    var longitudeString = this.padLeft(calcLongitude04, 8)
-    var letter = ''
-    var letterPosition = 0
-    var geonymResult = ''
-
-    for (letterPosition = 0; letterPosition < 8; letterPosition++) {
-      letter = parseInt(latitudeString.substring(letterPosition, letterPosition + 1)) * Math.sqrt(geonym.alphabetCodeLength) +
-                parseInt(longitudeString.substring(letterPosition, letterPosition + 1)) + 1
-      letter = geonym.alphabetCode.substring(letter - 1, letter)
-      geonymResult = geonymResult + letter
-    }
-    // Let's process to Geonym checksum calculation
-    var checkSum = 0
-    var checkSumPosition = 0
-    var checkSumLetter = ''
-    for (letterPosition = 0; letterPosition < 8; letterPosition++) {
-      checkSum = geonym.alphabetCode.search(geonymResult.substring(letterPosition, letterPosition + 1)) * (letterPosition + 1)
-      checkSumPosition = checkSumPosition + checkSum
-    }
-    checkSumPosition = checkSumPosition % geonym.alphabetChecksumLength
-    checkSumLetter = geonym.alphabetChecksum.substring(checkSumPosition, checkSumPosition + 1)
-
-    // Geonym to return is...
-    geonymResult = geonymResult.substring(0, 4) + '-' + geonymResult.substring(4, 8) + '/' + checkSumLetter
-
-    return geonymResult
-  }
-  getFromGeonymToPosition (paramCode, paramChecksum, geonym) {
-    // Extract Code & CheckSum from Geonym parameter.
-    var code = paramCode.substring(0, 4) + paramCode.substring(5, 9)
-    var latitudeInt = 0
-    var latitudeBase5 = ''
-    var latitudeBase10 = 0
-    var longitudeMod = 0.0
-    var longitudeBase5 = ''
-    var longitudeBase10 = 0
-
-    // Find position from alphabetCode for each code character.
-    var letterPosition = 0
-    var position = 0
-    for (letterPosition = 0; letterPosition < 8; letterPosition++) {
-      position = geonym.alphabetCode.search(code.substring(letterPosition, letterPosition + 1))
-      longitudeMod = position % (Math.sqrt(geonym.alphabetCodeLength))
-      longitudeBase5 = longitudeBase5 + longitudeMod.toString()
-      latitudeInt = Math.floor(position / Math.sqrt(geonym.alphabetCodeLength))
-      latitudeBase5 = latitudeBase5 + latitudeInt.toString()
-    }
-
-    var loop
-    // latitude
-    var latitudeRecord
-    for (loop = 0; loop < 8; loop++) {
-      latitudeRecord = latitudeBase5.substring((8 - loop - 1), (8 - loop))
-      latitudeRecord = latitudeRecord * Math.pow(Math.sqrt(geonym.alphabetCodeLength), loop)
-      latitudeRecord = Math.floor(latitudeRecord)
-      latitudeBase10 = latitudeBase10 + latitudeRecord
-    }
-    latitudeBase10 = latitudeBase10 + 0.5
-    latitudeBase10 = latitudeBase10 / (Math.pow(Math.sqrt(geonym.alphabetCodeLength), geonym.numberOfDigitsForCode))
-    latitudeBase10 = latitudeBase10 * geonym.originHigh
-    latitudeBase10 = geonym.originLatitude - latitudeBase10
-
-    // longitude
-    var longitudeRecord
-    for (loop = 8; loop > 0; loop--) {
-      longitudeRecord = longitudeBase5.substring((loop), (loop - 1))
-      longitudeRecord = longitudeRecord * Math.pow(Math.sqrt(geonym.alphabetCodeLength), 8 - loop)
-      longitudeRecord = Math.floor(longitudeRecord)
-      longitudeBase10 = longitudeBase10 + longitudeRecord
-    }
-    longitudeBase10 = longitudeBase10 + 0.5
-    longitudeBase10 = longitudeBase10 / (Math.pow(Math.sqrt(geonym.alphabetCodeLength), geonym.numberOfDigitsForCode))
-    longitudeBase10 = longitudeBase10 * geonym.originWide
-    longitudeBase10 = geonym.originLongitude + longitudeBase10
-
-    // Let's process to Geonym checksum calculation
-    var checkSum = 0
-    var checkSumResult = 0
-    for (letterPosition = 0; letterPosition < 8; letterPosition++) {
-      checkSum = geonym.alphabetCode.search(code.substring(letterPosition, letterPosition + 1)) * (letterPosition + 1)
-      checkSumResult = checkSumResult + checkSum
-    }
-    checkSumResult = checkSumResult % geonym.alphabetChecksumLength
-    checkSumResult = geonym.alphabetChecksum.substring(checkSumResult, checkSumResult + 1)
-
-    // Check checkSumResult vs checkSum
-    var positionResult = {}
-    if (checkSumResult === paramChecksum) {
-      positionResult = {
-        geonym: code.substring(0, 4) + '-' + code.substring(4, 9) + '/' + paramChecksum,
-        latitude: latitudeBase10,
-        longitude: longitudeBase10
-      }
-      return positionResult
-    } else {
-      positionResult = {
-        geonym: code.substring(0, 4) + '-' + code.substring(4, 9) + '/' + paramChecksum,
-        error: "Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance."
-      }
-      return positionResult
-    }
-  }
-  toRadix (N, radix) {
-    var HexN = ''
-    var Q = Math.floor(Math.abs(N))
-    var R
-    while (true) {
-      R = Q % radix
-      HexN = '0123456789abcdefghijklmnopqrstuvwxyz'.charAt(R) + HexN
-      Q = (Q - R) / radix
-      if (Q === 0) break
-    }
-    return ((N < 0) ? '-' + HexN : HexN)
-  }
-  padLeft (value, length) {
-    // Pad a value with '0' on the left.
-    return (value.toString().length < length) ? this.padLeft('0' + value, length) : value
-  }
   leafletDrawPoint (paramLatitude, paramLongitude, paramZoom, paramMap, paramMessage) {
     // Leaflet > Go to map coordinates.
     paramMap.setView([paramLatitude, paramLongitude], paramZoom)
@@ -404,7 +332,7 @@ class Geonym extends BaseWebBase {
       .openPopup()
   }
   userInfoError (paramMessage) {
-    // Put a message into userInfo div.
+    // Put an error message into userInfo div.
     document.getElementById('userInfo').innerHTML = `
       <div class="alert alert-info" role="alert">
       <strong>` + paramMessage + `</strong>
@@ -412,6 +340,7 @@ class Geonym extends BaseWebBase {
     `
   }
   userInfoMessage (paramUserInfoText) {
+    // Put a message into userInfo div.
     document.getElementById('userInfo').innerHTML = `
     <div class="alert alert-info" role="alert">
       <strong>` + paramUserInfoText.Title_01 + `:</strong> [ ` +
