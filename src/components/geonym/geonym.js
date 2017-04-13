@@ -36,19 +36,6 @@ class Geonym extends BaseWebBase {
     const inputCode = document.getElementById('data-code')
     const inputChecksum = document.getElementById('data-checksum')
 
-    // Geonym
-    var geonym = {
-      originLatitude: 51.45,
-      originLongitude: -5.45,
-      originWide: 15.25,
-      originHigh: 10.54,
-      alphabetCode: '456783NPR92MXTC1LWVD0KJHF',
-      numberOfDigitsForCode: 8,
-      alphabetChecksum: '0123456789ACDEFGHJKLMNPQRTUVWXY'
-    }
-    geonym['alphabetCodeLength'] = geonym.alphabetCode.length
-    geonym['alphabetChecksumLength'] = geonym.alphabetChecksum.length
-
     // Leaflet
     // Create a map centered in Paris...
     let lat = 48.841025
@@ -108,13 +95,13 @@ class Geonym extends BaseWebBase {
     // Adress Geocoding.
     buttonGeocoding.addEventListener('click', (e) => {
       e.preventDefault()
-      this.formGeocodingSubmit(map, geonym)
+      this.formGeocodingSubmit(map)
     })
 
     // From Coordinates to Geonym.
     buttonCoordToGeonym.addEventListener('click', (e) => {
       e.preventDefault()
-      this.formCoordToGeonymSubmit(map, geonym)
+      this.formCoordToGeonymSubmit(map)
     })
 
     // From Geonym to Coordinates.
@@ -129,11 +116,11 @@ class Geonym extends BaseWebBase {
         inputLongitude.value === '' &&
         inputCode.value === '' &&
         inputChecksum.value === '') {
-      this.formGeocodingSubmit(map, geonym)
+      this.formGeocodingSubmit(map)
     }
   }
 
-  formGeocodingSubmit (map, geonym) {
+  formGeocodingSubmit (map) {
     // Call api to geocode adress.
     const address = this.body.querySelector('[data-address]')
     if (address.value) {
@@ -209,7 +196,7 @@ class Geonym extends BaseWebBase {
       }) // this.request()
     } // address.value
   } // formSubmit()
-  formCoordToGeonymSubmit (map, geonym) {
+  formCoordToGeonymSubmit (map) {
     // Call api to geocode coordinates.
     const lat = this.body.querySelector('[data-latitude]')
     const lon = this.body.querySelector('[data-longitude]')
