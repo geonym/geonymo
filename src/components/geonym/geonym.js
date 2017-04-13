@@ -69,10 +69,10 @@ class Geonym extends BaseWebBase {
           // No coordinates received.
           var userInfoText =
             'Les coordonnées renseignées sont en dehors de la grille définie. ' +
-            '( Plage de longitude autorisée : ]' +
-            positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ' +
-            ' / Plage de latitude autorisée : ]' +
-            positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ). '
+            '( Plage de latitude autorisée : ]' +
+            positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ' +
+            ' / Plage de longitude autorisée : ]' +
+            positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ). '
           this.userInfoError(userInfoText)
           this.leafletDrawPoint(76.71667, -67.49972, 15, map, userInfoText)
         } else {
@@ -165,10 +165,10 @@ class Geonym extends BaseWebBase {
                   // No coordinates received.
                   var userInfoText =
                     'Les coordonnées renseignées sont en dehors de la grille définie. ' +
-                    '( Plage de longitude autorisée : ]' +
-                    positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ' +
-                    ' / Plage de latitude autorisée : ]' +
-                    positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ). '
+                    '( Plage de latitude autorisée : ]' +
+                    positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ' +
+                    ' / Plage de longitude autorisée : ]' +
+                    positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ). '
                   this.userInfoError(userInfoText)
                   this.leafletDrawPoint(76.71667, -67.49972, 15, map, userInfoText)
                 } else {
@@ -240,10 +240,10 @@ class Geonym extends BaseWebBase {
             // No coordinates received.
             var userInfoText =
               'Les coordonnées renseignées sont en dehors de la grille définie. ' +
-              '( Plage de longitude autorisée : ]' +
-              positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ' +
-              ' / Plage de latitude autorisée : ]' +
-              positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ). '
+              '( Plage de latitude autorisée : ]' +
+              positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ' +
+              ' / Plage de longitude autorisée : ]' +
+              positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ). '
             this.userInfoError(userInfoText)
             this.leafletDrawPoint(76.71667, -67.49972, 15, map, userInfoText)
           } else {
@@ -321,7 +321,7 @@ class Geonym extends BaseWebBase {
   userInfoError (paramMessage) {
     // Put an error message into userInfo div.
     document.getElementById('userInfo').innerHTML = `
-      <div class="alert alert-info" role="alert">
+      <div class="alert alert-danger" role="alert">
       <strong>` + paramMessage + `</strong>
       </div>
     `
