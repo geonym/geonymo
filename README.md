@@ -1,5 +1,5 @@
 # GeonymoooOOOooo
-Gonymo is a Web client using Geonym API.
+Geonymo is a Web client using Geonym API.
 
 
 ## Purpose
@@ -34,8 +34,8 @@ This Geonym Web client app allows us to:
 
 ## Developer documentation
 
-* [README_DEV.md](https://github.com/geonym/geonymo/blob/master/README_DEV.md)
-
+* Geonymo Install & Setup & Run server:  [README_DEV.md](https://github.com/geonym/geonymo/blob/master/README_DEV.md)
+* Geonymo tests Install & Setup & Run: [README_TEST.md](https://github.com/geonym/geonymo/blob/master/README_TEST.md)
 
 ## About
 
