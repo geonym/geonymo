@@ -1,5 +1,14 @@
-# Geonymo
-Gonymo is a Web client using Geonym API.
+# GeonymoooOOOooo
+Geonymo is a Web client using Geonym API.
+
+
+## Purpose
+This documentation was written for developpers.  
+It describes:  
+  . How to install Geonymo.  
+  . How to setup Geonymo once installation is done.  
+  . How to run Geonymo server.  
+  . How to use Geonymo app.
 
 
 ## Geonymo Install
