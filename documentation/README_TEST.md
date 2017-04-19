@@ -5,9 +5,8 @@ Geonymo is a Web client using Geonym API.
 ## Purpose
 This documentation was written for developpers to run/develop some tests.
 It describes:  
-  . How to install Java8.
-  . How to install & setup WebDriverIO.  
-  . How to install selenium server.  
+  . How to install Java8.  
+  . How to install & setup WebDriverIO and Selenium Driver.  
   . How to run Geonymo tests.  
 
 
@@ -53,7 +52,8 @@ export DERBY_HOME=/usr/lib/jvm/java-8-oracle/db</code></pre>
 
 11. That's it. :-)
 
-## WebDriverIO Install
+
+## WebDriverIO and Selenium Driver Install & Setup
 
 1. Go to Geonymo install directory.
 
@@ -67,15 +67,11 @@ cd test/tools/selenium-standalone-server</code></pre>
 4. Download the latest version geckdriver for your environment and unpack it in your project directory.
 <pre><code>curl -L https://github.com/mozilla/geckodriver/releases/download/v0.11.1/geckodriver-v0.11.1-linux64.tar.gz | tar xz </code></pre>
 
-5. Start selenium standalone server.
-<pre><code>java -jar -Dwebdriver.gecko.driver=./geckodriver selenium-server-standalone-3.0.1.jar</code></pre>
+5. Go to Geonymo install directory & Install WebdriverIO.
+<pre><code>cd ../../..  
+npm install webdriverio --save-dev</code></pre>
 
-6. Open a new terminal and go to Geonymo install directory.
-
-7. Install WebdriverIO
-<pre><code>npm install webdriverio --save-dev</code></pre>
-
-8. Create a 'Test runner' config file
+6. Create a 'Test runner' config file
 <pre><code>./node_modules/.bin/wdio config</code></pre>
 A question interface pops up. It will help to create the config easy and fast. If you are not sure what to answer follow this answers:
 
@@ -109,10 +105,10 @@ A question interface pops up. It will help to create the config easy and fast. I
   . Q: What is the base url?  
   . A: http://localhost (just press enter)
 
-9. Create test/specs directory (from project directory)
+7. Create test/specs directory (from project directory)
 <pre><code>mkdir -p test/specs</code></pre>
 
-10. Create a test.js Test file into test/specs directory with the following content:
+8. Create a test.js Test file into test/specs directory with the following content:
 <pre><code>var assert = require('assert')
     describe('webdriver.io page', function () {
       it('should have the right title - the fancy generator way', function () {
@@ -122,14 +118,29 @@ A question interface pops up. It will help to create the config easy and fast. I
       })
     })</code></pre>
 
-11. Run the test server (from Geonymo install directory)
-<pre><code>cd ..
-cd ..
-./node_modules/.bin/wdio wdio.conf.js
-</code></pre>
+9. That's it. :-)
 
-12. That's it. :-)
 
+## How to run Geonymo tests
+
+1. Open a terminal
+
+2. Go to Geonymo directory
+
+3. Go to test/tools/selenium-standalone-server directory
+<pre><code>cd test/tools/selenium-standalone-server</code></pre>
+
+4. Execute Selenium Server
+<pre><code>java -jar -Dwebdriver.gecko.driver=./geckodriver selenium-server-standalone-3.0.1.jar</code></pre>
+
+5. Open a new terminal
+
+6. Go to Geonymo directory
+
+7. Execute Geonymo tests
+<pre><code>./node_modules/.bin/wdio wdio.conf.js</code></pre>
+
+8. That's it. :-)
 
 ## About
 

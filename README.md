@@ -34,8 +34,8 @@ This Geonym Web client app allows us to:
 
 ## Developer documentation
 
-* Geonymo Install & Setup & Run server:  [README_DEV.md](https://github.com/geonym/geonymo/blob/master/README_DEV.md)
-* Geonymo tests Install & Setup & Run: [README_TEST.md](https://github.com/geonym/geonymo/blob/master/README_TEST.md)
+* Geonymo Install & Setup & Run server:  [README_DEV.md](https://github.com/geonym/geonymo/blob/master/documentation/README_DEV.md)
+* Geonymo tests Install & Setup & Run: [README_TEST.md](https://github.com/geonym/geonymo/blob/master/documentation/README_TEST.md)
 
 ## About
 
