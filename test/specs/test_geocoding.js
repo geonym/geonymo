@@ -17,7 +17,7 @@ describe('webdriver.io page', function () {
     var address = $('#data-address')
     address.setValue('139 Rue de Bercy 75012 Paris')
     browser.click('#button-geocoding')
-    browser.pause(3000)
+    browser.pause(1000)
 
     // Check map div
     var map = browser.getText('#map')
