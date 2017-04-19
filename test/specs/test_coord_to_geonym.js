@@ -19,6 +19,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('2.377966')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -47,6 +48,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('2.35')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -75,6 +77,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('2,35')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -103,6 +106,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('2,27758')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -131,6 +135,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('-1,912')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -159,6 +164,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('6,6605')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -187,6 +193,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('3,082')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -215,6 +222,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('2,708')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -243,6 +251,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('8,733778')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -271,6 +280,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('-5,45')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -294,6 +304,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('2;377966')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -317,6 +328,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('0.00')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -340,6 +352,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('0.00')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -363,6 +376,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('-10.00')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -386,6 +400,7 @@ describe('webdriver.io page', function () {
     var longitude = $('#data-longitude')
     longitude.setValue('10.00')
     browser.click('#button-coord-to-geonym')
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')

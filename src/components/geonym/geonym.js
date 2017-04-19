@@ -8,7 +8,6 @@ import BaseWebBase from '../../basewebbase.js'
 import Template from '../../templates/geonym/geonym.js'
 
 var L = require('leaflet')
-// var async = require('async')
 
 class Geonym extends BaseWebBase {
   constructor (body) {
@@ -59,7 +58,7 @@ class Geonym extends BaseWebBase {
       if (err) {
         // Error
         this.userInfoError(err)
-        this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+        this.leafletDrawMarker(76.71667, -67.49972, 15, map,
           "Il n'existe pas de coordonnées.")
       } else {
         var positionResult = JSON.parse(data)
@@ -74,7 +73,7 @@ class Geonym extends BaseWebBase {
             ' / Plage de longitude autorisée : ]' +
             positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ). '
           this.userInfoError(userInfoText)
-          this.leafletDrawPoint(76.71667, -67.49972, 15, map, userInfoText)
+          this.leafletDrawMarker(76.71667, -67.49972, 15, map, userInfoText)
         } else {
           // Coordinates received. Let's draw new coordinates on the map.
           this.userInfoMessage({
@@ -86,7 +85,7 @@ class Geonym extends BaseWebBase {
               positionResult.properties.geonym.substring(4, 8) + `/` +
               positionResult.properties.checksum
           })
-          this.leafletDrawPoint(lat, lon, 15, map,
+          this.leafletDrawMarker(lat, lon, 15, map,
             '[ ' + parseFloat(lat).toFixed(6) + ' ; ' + parseFloat(lon).toFixed(6) + ' ]')
         } // else (coordinates received or not received.)
       } // else (error / No Error)
@@ -133,7 +132,9 @@ class Geonym extends BaseWebBase {
       // Let's interpret results...
       this.request(urlGeocoding, (err, res, data) => {
         if (err) {
-          res.status(412).json({msg: err.message})
+          this.userInfoError(err)
+          this.leafletDrawMarker(76.71667, -67.49972, 15, map,
+            "Il n'existe pas de coordonnées.")
         } else {
           // Data are collected.
           var address = JSON.parse(data)
@@ -144,52 +145,12 @@ class Geonym extends BaseWebBase {
             var lat = address.features[0].geometry.coordinates[1]
             var label = address.features[0].properties.label
 
-            // Let's calculate Geonym from coordinates.
-            const URLGeonym = {
-              method: 'GET',
-              url: `${this.URLGeonym}/?` +
-                `lat=` + lat +
-                `&lon=` + lon
-            }
-            this.request(URLGeonym, (err, res, data) => {
-              if (err) {
-                // Error
-                this.userInfoError(err)
-                this.leafletDrawPoint(76.71667, -67.49972, 15, map,
-                  "Il n'existe pas de coordonnées.")
-              } else {
-                var positionResult = JSON.parse(data)
-
-                // Some coordinates received ?
-                if (!positionResult.properties) {
-                  // No coordinates received.
-                  var userInfoText =
-                    'Les coordonnées renseignées sont en dehors de la grille définie. ' +
-                    '( Plage de latitude autorisée : ]' +
-                    positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ' +
-                    ' / Plage de longitude autorisée : ]' +
-                    positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ). '
-                  this.userInfoError(userInfoText)
-                  this.leafletDrawPoint(76.71667, -67.49972, 15, map, userInfoText)
-                } else {
-                  // Coordinates received. Let's draw new coordinates on the map.
-                  this.userInfoMessage({
-                    'Title_01': 'Coordonnées',
-                    'Text_01': parseFloat(lat).toFixed(6) + ` ; ` + parseFloat(lon).toFixed(6),
-                    'Title_02': 'Geonym',
-                    'Text_02':
-                      positionResult.properties.geonym.substring(0, 4) + `-` +
-                      positionResult.properties.geonym.substring(4, 8) + `/` +
-                      positionResult.properties.checksum
-                  })
-                  this.leafletDrawPoint(lat, lon, 15, map, label)
-                } // else (coordinates received or not received.)
-              } // else (error / No Error)
-            }) // this.request
+            // If a position is defined, let's geocode it thanks to geonym API.
+            this.geonymAPILatLon(lat, lon, map, label)
           } else {
             // Address is unknown.
             this.userInfoError("L'adresse que vous recherchez est inconnue.")
-            this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+            this.leafletDrawMarker(76.71667, -67.49972, 15, map,
               "L'adresse que vous recherchez est inconnue.")
           } // Adress is unknown.
         } // Data are collected.
@@ -211,57 +172,14 @@ class Geonym extends BaseWebBase {
     var lonRegex = regex.test(lon.value)
     if (!latRegex || !lonRegex) {
       this.userInfoError('Les coordonnées saisies ne sont pas correctes.')
-      this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+      this.leafletDrawMarker(76.71667, -67.49972, 15, map,
         'Les coordonnées saisies ne sont pas correctes.')
       return null
     }
 
     if (lat.value && lon.value) {
-      // If a position is defined, let's geocode it!
-
-      // Let's calculate Geonym from coordinates.
-      const URLGeonym = {
-        method: 'GET',
-        url: `${this.URLGeonym}/?` +
-          `lat=` + lat.value +
-          `&lon=` + lon.value
-      }
-      this.request(URLGeonym, (err, res, data) => {
-        if (err) {
-          // Error
-          this.userInfoError(err)
-          this.leafletDrawPoint(76.71667, -67.49972, 15, map,
-            "Il n'existe pas de coordonnées.")
-        } else {
-          var positionResult = JSON.parse(data)
-
-          // Some coordinates received ?
-          if (!positionResult.properties) {
-            // No coordinates received.
-            var userInfoText =
-              'Les coordonnées renseignées sont en dehors de la grille définie. ' +
-              '( Plage de latitude autorisée : ]' +
-              positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ' +
-              ' / Plage de longitude autorisée : ]' +
-              positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ). '
-            this.userInfoError(userInfoText)
-            this.leafletDrawPoint(76.71667, -67.49972, 15, map, userInfoText)
-          } else {
-            // Coordinates received. Let's draw new coordinates on the map.
-            this.userInfoMessage({
-              'Title_01': 'Coordonnées',
-              'Text_01': parseFloat(lat.value).toFixed(6) + ` ; ` + parseFloat(lon.value).toFixed(6),
-              'Title_02': 'Geonym',
-              'Text_02':
-                positionResult.properties.geonym.substring(0, 4) + `-` +
-                positionResult.properties.geonym.substring(4, 8) + `/` +
-                positionResult.properties.checksum
-            })
-            this.leafletDrawPoint(lat.value, lon.value, 15, map,
-              '[ ' + parseFloat(lat.value).toFixed(6) + ' ; ' + parseFloat(lon.value).toFixed(6) + ' ]')
-          } // else (coordinates received or not received.)
-        } // else (error / No Error)
-      }) // this.request
+      // If a position is defined, let's geocode it thanks to geonym API.
+      this.geonymAPILatLon(lat.value, lon.value, map, '')
     } // if lat.value & lon.value = OK.
   } // formCoordToGeonymSubmit()
   formGeonymToCoordSubmit (map) {
@@ -283,7 +201,7 @@ class Geonym extends BaseWebBase {
       this.request(URLGeonym, (err, res, data) => {
         if (err) {
           this.userInfoError(err)
-          this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+          this.leafletDrawMarker(76.71667, -67.49972, 15, map,
             "Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
         } else {
           var positionResult = JSON.parse(data)
@@ -297,12 +215,12 @@ class Geonym extends BaseWebBase {
               'Title_02': 'Geonym',
               'Text_02': geonymCode.value + `/` + geonymChecksum.value
             })
-            this.leafletDrawPoint(positionResult.properties.lat, positionResult.properties.lon, 15, map,
+            this.leafletDrawMarker(positionResult.properties.lat, positionResult.properties.lon, 15, map,
               '[ ' + parseFloat(positionResult.properties.lat).toFixed(6) + ' ; ' + parseFloat(positionResult.properties.lon).toFixed(6) + ' ]')
           } else {
             // Incorrect Geonym. Try again.
             this.userInfoError("Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
-            this.leafletDrawPoint(76.71667, -67.49972, 15, map,
+            this.leafletDrawMarker(76.71667, -67.49972, 15, map,
               "Le Geonym saisi est incorrect. Vérifiez le code ainsi que son checksum. Merci d'avance.")
           } // else
         } // else
@@ -310,13 +228,68 @@ class Geonym extends BaseWebBase {
     } // geonym.code && geonym.value defined.
   } // formSubmit()
 
-  leafletDrawPoint (paramLatitude, paramLongitude, paramZoom, paramMap, paramMessage) {
+  leafletDrawMarker (paramLatitude, paramLongitude, paramZoom, paramMap, paramMessage) {
     // Leaflet > Go to map coordinates.
     paramMap.setView([paramLatitude, paramLongitude], paramZoom)
     // Leaflet > ... and create a marker for these coordinates.
     L.marker([paramLatitude, paramLongitude]).addTo(paramMap)
       .bindPopup(paramMessage)
       .openPopup()
+  }
+  geonymAPILatLon (paramLatitude, paramLongitude, paramMap, paramLabel) {
+    // Call Geonym API thanks to coordinates.
+
+    // Let's calculate Geonym from coordinates.
+    const URLGeonym = {
+      method: 'GET',
+      url: `${this.URLGeonym}/?` +
+        `lat=` + paramLatitude +
+        `&lon=` + paramLongitude
+    }
+    this.request(URLGeonym, (err, res, data) => {
+      if (err) {
+        // Error
+        this.userInfoError(err)
+        this.leafletDrawMarker(76.71667, -67.49972, 15, paramMap,
+          "Il n'existe pas de coordonnées.")
+      } else {
+        var positionResult = JSON.parse(data)
+
+        // Some coordinates received ?
+        if (!positionResult.properties) {
+          // No coordinates received.
+          var userInfoText =
+            'Les coordonnées renseignées sont en dehors de la grille définie. ' +
+            '( Plage de latitude autorisée : ]' +
+            positionResult.params.min_lat + ' ; ' + positionResult.params.max_lat + '[ ' +
+            ' / Plage de longitude autorisée : ]' +
+            positionResult.params.min_lon + ' ; ' + positionResult.params.max_lon + '[ ). '
+          this.userInfoError(userInfoText)
+          this.leafletDrawMarker(76.71667, -67.49972, 15, paramMap, userInfoText)
+        } else {
+          // Coordinates received. Let's draw new coordinates on the map.
+          this.userInfoMessage({
+            'Title_01': 'Coordonnées',
+            'Text_01': parseFloat(paramLatitude).toFixed(6) + ` ; ` + parseFloat(paramLongitude).toFixed(6),
+            'Title_02': 'Geonym',
+            'Text_02':
+              positionResult.properties.geonym.substring(0, 4) + `-` +
+              positionResult.properties.geonym.substring(4, 8) + `/` +
+              positionResult.properties.checksum
+          })
+
+          if (paramLabel === '') {
+            // No paramLabel given, let's put coordinates for marker label.
+            this.leafletDrawMarker(paramLatitude, paramLongitude, 15, paramMap,
+              '[ ' + parseFloat(paramLatitude).toFixed(6) + ' ; ' + parseFloat(paramLongitude).toFixed(6) + ' ]')
+          } else {
+            // paramLabel given, let's put label for marker label.
+            this.leafletDrawMarker(paramLatitude, paramLongitude, 15, paramMap,
+              paramLabel)
+          } // paramLabel
+        } // else (coordinates received or not received.)
+      } // else (error / No Error)
+    }) // this.request
   }
   userInfoError (paramMessage) {
     // Put an error message into userInfo div.

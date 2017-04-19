@@ -19,7 +19,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('1')
     browser.click('#button-geonym-to-coord')
-    browser.pause(1000)
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -48,7 +48,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('T')
     browser.click('#button-geonym-to-coord')
-    browser.pause(1000)
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -77,7 +77,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('C')
     browser.click('#button-geonym-to-coord')
-    browser.pause(1000)
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -106,7 +106,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('0')
     browser.click('#button-geonym-to-coord')
-    browser.pause(1000)
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -135,7 +135,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('K')
     browser.click('#button-geonym-to-coord')
-    browser.pause(1000)
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -164,7 +164,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('V')
     browser.click('#button-geonym-to-coord')
-    browser.pause(1000)
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -193,7 +193,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('V')
     browser.click('#button-geonym-to-coord')
-    browser.pause(1000)
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -222,7 +222,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('5')
     browser.click('#button-geonym-to-coord')
-    browser.pause(1000)
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -251,7 +251,7 @@ describe('webdriver.io page', function () {
     var checksum = $('#data-checksum')
     checksum.setValue('0')
     browser.click('#button-geonym-to-coord')
-    browser.pause(1000)
+    browser.pause(3000)
 
     // Check map div
     var map = browser.getText('#map')
@@ -280,7 +280,7 @@ describe('webdriver.io page', function () {
   var checksum = $('#data-checksum')
   checksum.setValue('9')
   browser.click('#button-geonym-to-coord')
-  browser.pause(1000)
+  browser.pause(3000)
 
   // Check map div
   var map = browser.getText('#map')
